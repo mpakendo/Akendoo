@@ -1,3 +1,4 @@
+// wireUI: connect the UI in Mastermind.html to the actions in MastermindUI.js
 
 function wireUI() {
   debug.printf("wiring UI"); debug.println();	
