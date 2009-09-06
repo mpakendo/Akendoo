@@ -15,8 +15,14 @@
     <script type="text/javascript" src="js/MastermindUI.js"></script>
     <script type="text/javascript" src="js/wireUI.js"> </script> 
     <script>
+    var mastermindUI = new MastermindUI();
+    var wireUI = new WireUI();
+    mastermindUI.UI = wireUI;
+    
+    mastermindUI.initialize();
+    
     $(document).ready(function() {
-        wireUI();
+        wireUI.connectHTML(mastermindUI);
     });
     </script> 
   </head>
@@ -26,7 +32,7 @@
 	<tr>
 		<td> <a href="#" onclick="{return debug.displayDebugInfo();}">Debug Information</a></td>
 		<td><a href="#" onclick="return debug.clearDebugInfo();">Clear Debug Information</a></td> 
-		<td> <a href="#" onclick="{wireUI(); /*wireMouseOver();*/ return false;}">Wire UI</a></td>		
+		<td><a href="#" onclick="return wireMouseOver();">Wire Mouse Over</a></td> 	
 	</tr>	
 </table>
 <div style="background:green" id="Mastermind.html:displayDebugInfo"></div>
@@ -58,11 +64,11 @@
 
 <img src="" title="" id="cyanColor" style="height: 36px; left: 478px; position: absolute; top: 343px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="pegHole0.0" style="height: 46px; left: 69px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole0.0" style="height: 46px; left: 68px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole0.1" style="height: 46px; left: 124px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole0.1" style="height: 46px; left: 123px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole0.2" style="height: 46px; left: 179px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole0.2" style="height: 46px; left: 178px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
 
 <img src="" title="" id="pegHole1.0" style="height: 46px; left: 68px; position: absolute; top: 361px; width: 46px; z-index: 1; " />
 
@@ -70,57 +76,57 @@
 
 <img src="" title="" id="pegHole1.2" style="height: 46px; left: 178px; position: absolute; top: 361px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole0.3" style="height: 46px; left: 234px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole0.3" style="height: 46px; left: 233px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
 
 <img src="" title="" id="pegHole1.3" style="height: 46px; left: 233px; position: absolute; top: 361px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole2.0" style="height: 46px; left: 67px; position: absolute; top: 303px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole2.0" style="height: 46px; left: 68px; position: absolute; top: 303px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole2.1" style="height: 46px; left: 122px; position: absolute; top: 303px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole2.1" style="height: 46px; left: 123px; position: absolute; top: 303px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole2.2" style="height: 46px; left: 177px; position: absolute; top: 303px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole2.2" style="height: 46px; left: 178px; position: absolute; top: 303px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole2.3" style="height: 46px; left: 232px; position: absolute; top: 303px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole2.3" style="height: 46px; left: 233px; position: absolute; top: 303px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole3.0" style="height: 46px; left: 66px; position: absolute; top: 245px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole3.0" style="height: 46px; left: 68px; position: absolute; top: 245px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole3.1" style="height: 46px; left: 121px; position: absolute; top: 245px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole3.1" style="height: 46px; left: 123px; position: absolute; top: 245px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole3.2" style="height: 46px; left: 176px; position: absolute; top: 245px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole3.2" style="height: 46px; left: 178px; position: absolute; top: 245px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole3.3" style="height: 46px; left: 231px; position: absolute; top: 245px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole3.3" style="height: 46px; left: 233px; position: absolute; top: 245px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole4.0" style="height: 46px; left: 65px; position: absolute; top: 187px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole4.0" style="height: 46px; left: 68px; position: absolute; top: 187px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole4.1" style="height: 46px; left: 120px; position: absolute; top: 187px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole4.1" style="height: 46px; left: 123px; position: absolute; top: 187px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole4.2" style="height: 46px; left: 175px; position: absolute; top: 187px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole4.2" style="height: 46px; left: 178px; position: absolute; top: 187px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole4.3" style="height: 46px; left: 230px; position: absolute; top: 187px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole4.3" style="height: 46px; left: 233px; position: absolute; top: 187px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole5.0" style="height: 46px; left: 64px; position: absolute; top: 129px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole5.0" style="height: 46px; left: 68px; position: absolute; top: 129px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole5.1" style="height: 46px; left: 119px; position: absolute; top: 129px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole5.1" style="height: 46px; left: 123px; position: absolute; top: 129px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole5.2" style="height: 46px; left: 174px; position: absolute; top: 129px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole5.2" style="height: 46px; left: 178px; position: absolute; top: 129px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole5.3" style="height: 46px; left: 229px; position: absolute; top: 129px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole5.3" style="height: 46px; left: 233px; position: absolute; top: 129px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole6.0" style="height: 46px; left: 63px; position: absolute; top: 71px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole6.0" style="height: 46px; left: 68px; position: absolute; top: 71px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole6.1" style="height: 46px; left: 118px; position: absolute; top: 71px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole6.1" style="height: 46px; left: 123px; position: absolute; top: 71px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole6.2" style="height: 46px; left: 173px; position: absolute; top: 71px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole6.2" style="height: 46px; left: 178px; position: absolute; top: 71px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole6.3" style="height: 46px; left: 228px; position: absolute; top: 71px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole6.3" style="height: 46px; left: 233px; position: absolute; top: 71px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole7.0" style="height: 46px; left: 62px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole7.0" style="height: 46px; left: 68px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole7.1" style="height: 46px; left: 117px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole7.1" style="height: 46px; left: 123px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole7.2" style="height: 46px; left: 172px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole7.2" style="height: 46px; left: 178px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="pegHole7.3" style="height: 46px; left: 227px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
+<img src="" title="" id="pegHole7.3" style="height: 46px; left: 233px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
  
 <img src="" title="" id="resultPegs0" style="height: 55px; left: 316px; position: absolute; top: 414px; width: 66px; z-index: 1; " />
 
@@ -203,8 +209,7 @@
 
 <img src="" title="" id="resultPegHole7.0" style="height: 25px; left: 323px; position: absolute; top: 37px; width: 25px; z-index: 1; " />
 
-
-<img src="" title="" id="colorDelimiter0" style="height: 52px; left: 473px; position: absolute; top: 335px; width: 46px; z-index: 1; " />
+<!--
 
 <img src="" title="" id="pegRow0" style="height: 61px; left: 47px; position: absolute; top: 411px; width: 257px; z-index: 1; " />
 
@@ -222,11 +227,13 @@
 
 <img src="" title="" id="pegRow7" style="height: 61px; left: 47px; position: absolute; top: 6px; width: 257px; z-index: 1; " />
 
+-->
+
 <img src="" title="" id="pegDelimiter0.0" style="height: 60px; left: 62px; position: absolute; top: 413px; width: 56px; z-index: 1; " />
 
 <img src="" title="" id="pegDelimiter0.1" style="height: 60px; left: 117px; position: absolute; top: 413px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="pegDelimiter0.2" style="height: 60px; left: 171px; position: absolute; top: 411px; width: 56px; z-index: 1; " />
+<img src="" title="" id="pegDelimiter0.2" style="height: 60px; left: 172px; position: absolute; top: 411px; width: 56px; z-index: 1; " />
 
 <img src="" title="" id="pegDelimiter0.3" style="height: 60px; left: 227px; position: absolute; top: 413px; width: 56px; z-index: 1; " />
 
@@ -271,29 +278,29 @@
 
 <img src="" title="" id="pegDelimiter5.0" style="height: 60px; left: 62px; position: absolute; top: 122px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="pegDelimiter6.3" style="height: 60px; left: 224px; position: absolute; top: 65px; width: 56px; z-index: 1; " />
+<img src="" title="" id="pegDelimiter6.3" style="height: 60px; left: 227px; position: absolute; top: 65px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="pegDelimiter6.2" style="height: 60px; left: 169px; position: absolute; top: 65px; width: 56px; z-index: 1; " />
+<img src="" title="" id="pegDelimiter6.2" style="height: 60px; left: 172px; position: absolute; top: 65px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="pegDelimiter6.1" style="height: 60px; left: 114px; position: absolute; top: 65px; width: 56px; z-index: 1; " />
+<img src="" title="" id="pegDelimiter6.1" style="height: 60px; left: 117px; position: absolute; top: 65px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="pegDelimiter6.0" style="height: 60px; left: 59px; position: absolute; top: 65px; width: 56px; z-index: 1; " />
+<img src="" title="" id="pegDelimiter6.0" style="height: 60px; left: 62px; position: absolute; top: 65px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="pegDelimiter7.3" style="height: 60px; left: 224px; position: absolute; top: 7px; width: 56px; z-index: 1; " />
+<img src="" title="" id="pegDelimiter7.3" style="height: 60px; left: 227px; position: absolute; top: 7px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="pegDelimiter7.2" style="height: 60px; left: 169px; position: absolute; top: 7px; width: 56px; z-index: 1; " />
+<img src="" title="" id="pegDelimiter7.2" style="height: 60px; left: 172px; position: absolute; top: 7px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="pegDelimiter7.1" style="height: 60px; left: 114px; position: absolute; top: 7px; width: 56px; z-index: 1; " />
+<img src="" title="" id="pegDelimiter7.1" style="height: 60px; left: 117px; position: absolute; top: 7px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="pegDelimiter7.0" style="height: 60px; left: 59px; position: absolute; top: 7px; width: 56px; z-index: 1; " />
+<img src="" title="" id="pegDelimiter7.0" style="height: 60px; left: 62px; position: absolute; top: 7px; width: 56px; z-index: 1; " />
 
-<img src="" title="" id="peg0.0" style="height: 36px; left: 74px; position: absolute; top: 424px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg0.0" style="height: 36px; left: 73px; position: absolute; top: 424px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg0.1" style="height: 36px; left: 129px; position: absolute; top: 424px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg0.1" style="height: 36px; left: 128px; position: absolute; top: 424px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg0.2" style="height: 36px; left: 184px; position: absolute; top: 424px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg0.2" style="height: 36px; left: 183px; position: absolute; top: 424px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg0.3" style="height: 36px; left: 239px; position: absolute; top: 424px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg0.3" style="height: 36px; left: 238px; position: absolute; top: 424px; width: 36px; z-index: 1; " />
 
 <img src="" title="" id="peg1.0" style="height: 36px; left: 73px; position: absolute; top: 366px; width: 36px; z-index: 1; " />
 
@@ -305,51 +312,51 @@
 
 <img src="" title="" id="peg2.3" style="height: 36px; left: 238px; position: absolute; top: 308px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg2.2" style="height: 36px; left: 182px; position: absolute; top: 308px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg2.2" style="height: 36px; left: 183px; position: absolute; top: 308px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg2.1" style="height: 36px; left: 126px; position: absolute; top: 308px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg2.1" style="height: 36px; left: 128px; position: absolute; top: 308px; width: 36px; z-index: 1; " />
 
 <img src="" title="" id="peg2.0" style="height: 36px; left: 73px; position: absolute; top: 308px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg3.3" style="height: 36px; left: 236px; position: absolute; top: 250px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg3.3" style="height: 36px; left: 238px; position: absolute; top: 250px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg3.2" style="height: 36px; left: 181px; position: absolute; top: 250px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg3.2" style="height: 36px; left: 183px; position: absolute; top: 250px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg3.1" style="height: 36px; left: 126px; position: absolute; top: 250px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg3.1" style="height: 36px; left: 128px; position: absolute; top: 250px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg3.0" style="height: 36px; left: 71px; position: absolute; top: 250px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg3.0" style="height: 36px; left: 73px; position: absolute; top: 250px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg4.3" style="height: 36px; left: 235px; position: absolute; top: 192px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg4.3" style="height: 36px; left: 238px; position: absolute; top: 192px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg4.2" style="height: 36px; left: 180px; position: absolute; top: 193px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg4.2" style="height: 36px; left: 183px; position: absolute; top: 192px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg4.1" style="height: 36px; left: 125px; position: absolute; top: 193px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg4.1" style="height: 36px; left: 128px; position: absolute; top: 192px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg4.0" style="height: 36px; left: 70px; position: absolute; top: 193px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg4.0" style="height: 36px; left: 73px; position: absolute; top: 192px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg5.0" style="height: 36px; left: 69px; position: absolute; top: 134px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg5.0" style="height: 36px; left: 73px; position: absolute; top: 134px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg5.1" style="height: 36px; left: 123px; position: absolute; top: 134px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg5.1" style="height: 36px; left: 128px; position: absolute; top: 134px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg5.2" style="height: 36px; left: 179px; position: absolute; top: 134px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg5.2" style="height: 36px; left: 183px; position: absolute; top: 134px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg5.3" style="height: 36px; left: 234px; position: absolute; top: 134px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg5.3" style="height: 36px; left: 238px; position: absolute; top: 134px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg6.3" style="height: 36px; left: 233px; position: absolute; top: 76px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg6.3" style="height: 36px; left: 238px; position: absolute; top: 76px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg6.2" style="height: 36px; left: 178px; position: absolute; top: 76px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg6.2" style="height: 36px; left: 183px; position: absolute; top: 76px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg6.1" style="height: 36px; left: 123px; position: absolute; top: 76px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg6.1" style="height: 36px; left: 128px; position: absolute; top: 76px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg6.0" style="height: 36px; left: 68px; position: absolute; top: 76px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg6.0" style="height: 36px; left: 73px; position: absolute; top: 76px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg7.0" style="height: 36px; left: 67px; position: absolute; top: 18px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg7.0" style="height: 36px; left: 73px; position: absolute; top: 18px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg7.1" style="height: 36px; left: 122px; position: absolute; top: 18px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg7.1" style="height: 36px; left: 128px; position: absolute; top: 18px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg7.2" style="height: 36px; left: 177px; position: absolute; top: 18px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg7.2" style="height: 36px; left: 183px; position: absolute; top: 18px; width: 36px; z-index: 1; " />
 
-<img src="" title="" id="peg7.3" style="height: 36px; left: 232px; position: absolute; top: 18px; width: 36px; z-index: 1; " />
+<img src="" title="" id="peg7.3" style="height: 36px; left: 238px; position: absolute; top: 18px; width: 36px; z-index: 1; " />
 
 <img src="" title="" id="resultPeg0.0" style="height: 21px; left: 325px; position: absolute; top: 444px; width: 21px; z-index: 1; " />
 
@@ -415,15 +422,17 @@
 
 <img src="" title="" id="resultPeg7.3" style="height: 21px; left: 354px; position: absolute; top: 13px; width: 21px; z-index: 1; " />
 
+<img src="" title="" id="colorDelimiter0" style="height: 52px; left: 473px; position: absolute; top: 336px; width: 46px; z-index: 1; " />
+
 <img src="" title="" id="colorDelimiter1" style="height: 52px; left: 473px; position: absolute; top: 287px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="colorDelimiter2" style="height: 52px; left: 473px; position: absolute; top: 238px; width: 46px; z-index: 1; " />
+<img src="" title="" id="colorDelimiter2" style="height: 52px; left: 473px; position: absolute; top: 239px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="colorDelimiter3" style="height: 52px; left: 473px; position: absolute; top: 186px; width: 46px; z-index: 1; " />
+<img src="" title="" id="colorDelimiter3" style="height: 52px; left: 473px; position: absolute; top: 187px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="colorDelimiter4" style="height: 52px; left: 473px; position: absolute; top: 135px; width: 46px; z-index: 1; " />
+<img src="" title="" id="colorDelimiter4" style="height: 52px; left: 473px; position: absolute; top: 138px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="colorDelimiter5" style="height: 52px; left: 473px; position: absolute; top: 88px; width: 46px; z-index: 1; " />
+<img src="" title="" id="colorDelimiter5" style="height: 52px; left: 473px; position: absolute; top: 90px; width: 46px; z-index: 1; " />
 
 <img src="" title="" id="codePegHole0" style="height: 46px; left: 442px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
 
@@ -433,7 +442,7 @@
 
 <img src="" title="" id="codePegHole3" style="height: 46px; left: 607px; position: absolute; top: 13px; width: 46px; z-index: 1; " />
 
-<img src="" title="" id="hiddenCodePegRow" style="height: 61px; left: 421px; position: absolute; top: 6px; width: 257px; z-index: 1; " />
+<img src="" title="" id="hiddenCodeRow" style="height: 61px; left: 421px; position: absolute; top: 6px; width: 257px; z-index: 1; " />
 
 <img src="" title="" id="hiddenCodePeg0" style="height: 36px; left: 447px; position: absolute; top: 18px; width: 36px; z-index: 1; " />
 
@@ -448,6 +457,15 @@
 <img src="" alt="✓" title="" id="buttonOkIcon" style="height: 34px; left: 529px; position: absolute; top: 426px; width: 42px; z-index: 2; " />
       
 <img src="" title="" id="buttonOk" style="height: 53px; left: 510px; position: absolute; top: 417px; width: 75px; z-index: 1; " />
+
+<img src="" title="" id="buttonPlayAgain" style="height: 53px; left: 609px; position: absolute; top: 417px; width: 75px; z-index: 1; " />
+ <div id="buttonPlayAgainIcon" class="graphic_textbox_style_default" style="height: 75px; left: 617px; position: absolute; top: 410px; width: 57px; z-index: 1; " id="id3">
+  <div>
+    <div class="graphic_textbox_layout_style_default">
+      <div class="paragraph Body" style="line-height: 70px; margin-bottom: 0px; margin-left: 0px; margin-right: 0px; margin-top: 0px; padding-bottom: 0pt; padding-top: 0pt; text-align: left; text-indent: 0px; color: #ffffff; font-family: 'MS-PMincho', 'MS PMincho', 'ＭＳ Ｐ明朝', 'serif'; font-size: 50px; font-style: normal; font-variant: normal; font-weight: bold; letter-spacing: 0; line-height: 60px; opacity: 1.00; text-decoration: none; text-transform: none;">⎋</div>
+    </div>
+  </div>
+</div>    
    
          <div style="height: 480px; line-height: 480px; " class="tinyText"> </div> 
         </div>

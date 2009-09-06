@@ -22,7 +22,8 @@ Debug.prototype.printf = function (str) {
   this.debugInfo += str;
 };  
 
-Debug.prototype.println = function() {
+Debug.prototype.println = function(str) {
+ this.debugInfo += str;	
  this.debugInfo += "<BR>";
 }
 
@@ -39,7 +40,15 @@ Debug.prototype.clearDebugInfo = function () {
 
 function displayIdOnMouseOver(evt) {
 	var id = evt.target.getAttribute("id");
-	document.getElementById("Mastermind.html:displayDebugInfo").innerHTML = id + "<br>";
+	var style = evt.target.getAttribute("style");
+	var left = style.match(new RegExp("left: [0-9]*px"));
+	var top = style.match(new RegExp("top: [0-9]*px"));
+	
+    if (left == null || top == null) 
+	   document.getElementById("Mastermind.html:displayDebugInfo").innerHTML = id + "::"+ style + "<br>";
+    else
+ 	   document.getElementById("Mastermind.html:displayDebugInfo").innerHTML = id + "::"+ left[0] + " " + top[0] + "<br>";
+    	
 	
 }
 

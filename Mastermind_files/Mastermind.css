@@ -15,3 +15,13 @@ img {
 .tinyText {
     font-size: 1px;
 }
+
+.graphic_textbox_layout_style_default {
+    padding: 4px;
+}
+.graphic_textbox_style_default {
+    background: transparent;
+    float: none;
+    margin: 0px;
+    opacity: 1.00;
+}

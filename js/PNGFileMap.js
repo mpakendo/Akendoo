@@ -31,6 +31,11 @@ function PNGFileMap() {
 	};
 }
 
+PNGFileMap.prototype.url = function(mapId) {
+	return this.resourceFolderPath+this.map[mapId];
+	
+};
+
 PNGFileMap.prototype.buttonImage = function () {
 	return this.resourceFolderPath+this.map.buttonImage;
 };
