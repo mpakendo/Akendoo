@@ -20,12 +20,14 @@ function PNGFileMap() {
 		pegRow:			"shapeimage_89.png", /* 90-94, 173 */
 		emptyPeg:		"shapeimage_101.png", /* 102-128 */
 		emptyResultPeg: "shapeimage_129.png", /* 130-158 */
-		colorDelimiter: "shapeimage_159.png", /* 160-163 */
+		//colorDelimiter: "shapeimage_159.png", /* 160-163 */
+		colorDelimiter:	"shapeimageDelimiterOpaque.png",
 		hiddenCodePeg: 	"shapeimage_169.png", /* 170-172 */
 		pegChooserArrowLeft:	"shapeimage_174.png",
 		pegChooserArrowRight:	"shapeimage_175.png",
 		chosenPegDelimiter:	"shapeimage_176.png",
-		pegDelimiter:		"shapeimage_177.png",
+		//pegDelimiter:		"shapeimage_177.png",
+		pegDelimiter: "shapeimageDelimiterOpaque.png",
 		buttonImage:	"buttonImage.png",
 		buttonOkIcon:	"buttonOkIcon.png"
 	};

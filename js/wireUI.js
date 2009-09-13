@@ -5,8 +5,8 @@ function WireUI() {
 }
 
 WireUI.prototype.connectHTML = function (mastermindUI) {
-  debug.println("wiring UI"); 
-  debug.println("mmUI"+mastermindUI); 
+  //debug.println("wiring UI"); 
+  //debug.println("mmUI"+mastermindUI); 
   var id = function(str, i, j) {
 	  return "#"+str+i+"\\."+j;
   };
@@ -43,9 +43,12 @@ WireUI.prototype.connectHTML = function (mastermindUI) {
 	  }
   }  
   
+  $("img[id*='colorDelimiter']").each(function(i) {
+	    this.src= pngFileMap.colorDelimiter();
+  });
+  
   if (this.firstRun) {
     $("img[id*='colorDelimiter']").each(function(i) {
-	    this.src= pngFileMap.colorDelimiter();
 	    this.onclick = function(event) {
 		   mastermindUI.chooseColorHandler(event);
 	    };
@@ -58,9 +61,11 @@ WireUI.prototype.connectHTML = function (mastermindUI) {
 	  }
   }  
 
+/*  
   $("img[id*='pegRow']").each(function(i) {
 	  this.src= pngFileMap.pegRow();	  
   });
+*/  
    
   $("img[id*='pegDelimiter']").each(function(i) {
 	  this.src= pngFileMap.pegDelimiter();	  

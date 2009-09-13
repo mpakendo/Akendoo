@@ -53,7 +53,7 @@ MastermindUI.prototype.initialize =function () {
  var colors = ["redPeg", "greenPeg", "bluePeg","yellowPeg","cyanPeg", "violetPeg"];
  var selectedColors = {redPeg:false,greenPeg:false,bluePeg:false,yellowPeg:false,cyanPeg:false,violetPeg:false};
  
- debug.printf("Secret code: ");
+ //debug.printf("Secret code: ");
  for (var i = 0; i<= MastermindUI.PEGCOUNT; i++) {
 	 var rnd = Math.floor(Math.random()*(MastermindUI.COLORCOUNT+1));
 	 var randomChoice = colors[rnd];	 
@@ -64,9 +64,9 @@ MastermindUI.prototype.initialize =function () {
 	 this.colorCode[i] = randomChoice;
 	 selectedColors[randomChoice]=true;
 	 
-	 debug.printf(randomChoice+":"+rnd+" ");
+	 //debug.printf(randomChoice+":"+rnd+" ");
   };
-  debug.println("");
+  //debug.println("");
 
   this.pegs = [
               ["empty","empty","empty","empty"], 
@@ -86,9 +86,9 @@ MastermindUI.prototype.initialize =function () {
 };
 
 MastermindUI.prototype.playAgainHandler = function (event) {
+	  alert("Play again!");
 	  this.initialize();
 	  this.UI.connectHTML(this);
-	  alert("Play again!");
 };
 	 
 MastermindUI.prototype.setColorHandler = function (event) {
@@ -97,8 +97,8 @@ MastermindUI.prototype.setColorHandler = function (event) {
  };
 
 MastermindUI.prototype.buttonOKHandler = function(event) {
-	var str1 = "Chosen colors: ";
-	var str2 = "Result code: ";
+	//var str1 = "Chosen colors: ";
+	//var str2 = "Result code: ";
 	var color;
 	var locations;
 	var totalsCorrect = 0;
@@ -114,10 +114,10 @@ MastermindUI.prototype.buttonOKHandler = function(event) {
 	}
 	for (i = 0; i <= MastermindUI.PEGCOUNT; i++) {
 		color = this.pegs[this.pegRowCursor][i];
-		str1 += color;
-		str1 += " ";
+//		str1 += color;
+//		str1 += " ";
 		if (this.checkForCodeAndRemove(codeClone,color)) { 
-			debug.println("code contains "+color +"::"+ codeClone.toString());
+			//debug.println("code contains "+color +"::"+ codeClone.toString());
 			this.resultPegs[i] = "whiteResultPeg";
 			locations = this.codeIndexOf(color);
 			for (var k = 0; k<=locations.length;k++) {
@@ -127,8 +127,8 @@ MastermindUI.prototype.buttonOKHandler = function(event) {
 					break;
 				}
 			}
-		str2 += this.resultPegs[i];	
-		str2 += " ";
+//		str2 += this.resultPegs[i];	
+//		str2 += " ";
 		}
 	}
 	for (i = 0; i <= MastermindUI.PEGCOUNT; i++) {
@@ -137,8 +137,8 @@ MastermindUI.prototype.buttonOKHandler = function(event) {
 	if ((totalsCorrect == MastermindUI.PEGCOUNT+1) || this.pegRowCursor == MastermindUI.PEGROWCOUNT) {
 		this.revealCode();
 	}
-	debug.println(str1);
-	debug.println(str2);	
+//	debug.println(str1);
+//	debug.println(str2);	
 };
 
 MastermindUI.prototype.choosePegHandler = function (event) {
@@ -148,7 +148,7 @@ MastermindUI.prototype.choosePegHandler = function (event) {
 	 var coordinates = id.match(new RegExp("([0-9])","g"));
 	 
 	 if (coordinates == null || id.match(new RegExp("peg[0-9].[0-9]") == null)) {
-		 debug.printf("Event id mismatch. Expected pegX.Y - got:"+id);
+		 //debug.printf("Event id mismatch. Expected pegX.Y - got:"+id);
 		 throw "Event id mismatch"+id;
 	 }	 
 	 this.pegRowCursor = coordinates[0];
