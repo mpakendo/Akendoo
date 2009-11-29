@@ -144,8 +144,16 @@ MastermindUI.prototype.buttonOKHandler = function(event) {
 MastermindUI.prototype.choosePegHandler = function (event) {
 	 var previousPegRowCursor = this.pegRowCursor;
 	 var previousPegCursor = this.pegCursor;
-	 var id = event.target.getAttribute("id");
-	 var coordinates = id.match(new RegExp("([0-9])","g"));
+	 var id; 
+	 var coordinates; 
+	 if (!event) event = window.event;
+	 if (!event.target) { //IE
+		 id = event.srcElement.getAttribute("id");
+	 }
+	 else { // Mozilla
+		 id = event.target.getAttribute("id");
+	 }
+	 coordinates = id.match(new RegExp("([0-9])","g"));
 	 
 	 if (coordinates == null || id.match(new RegExp("peg[0-9].[0-9]") == null)) {
 		 //debug.printf("Event id mismatch. Expected pegX.Y - got:"+id);
@@ -162,7 +170,14 @@ MastermindUI.prototype.choosePegHandler = function (event) {
 
 MastermindUI.prototype.chooseColorHandler = function (event) {
 	 var previousColorCursor = this.colorCursor;
-	 var id = event.target.getAttribute("id");
+	 var id;
+	 if (!event) event = window.event;
+	 if (!event.target) { //IE
+		 id = window.event.srcElement.getAttribute("id");
+	 }
+	 else { // Mozilla
+		 id = event.target.getAttribute("id");
+	 }
 	 switch (id) {
 	 case "colorDelimiter0":
 		 this.colorChoice = "cyanPeg";
