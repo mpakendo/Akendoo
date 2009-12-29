@@ -18,6 +18,9 @@ WireUI.prototype.connectHTML = function (mastermindUI) {
   $("#violetColor").attr("src", pngFileMap.violetPeg());
   $("#cyanColor").attr("src", pngFileMap.cyanPeg());
   
+  $("#cyanColorDraggable").attr("src", pngFileMap.cyanPeg());
+  
+  
   //console.log($("img[@id^=pegRow]"));
   
   $("img[id*='pegHole']").each(function(i) {

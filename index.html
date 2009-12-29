@@ -14,6 +14,9 @@
     <script type="text/javascript" src="Mastermind_files/Mastermind.js"></script>
     <script type="text/javascript" src="js/PNGFileMap.js"></script>
     <script type="text/javascript" src="js/jquery-1.3.2.js"></script>
+    <script type="text/javascript" src="js/ui.core.js"></script>
+    <script type="text/javascript" src="js/ui.draggable.js"></script>
+     <script type="text/javascript" src="js/ui.droppable.js"></script>    
     <script type="text/javascript" src="js/debug.js"></script>
     <script type="text/javascript" src="js/MastermindUI.js"></script>
     <script type="text/javascript" src="js/wireUI.js"> </script> 
@@ -25,12 +28,26 @@
     mastermindUI.initialize();
     
     $(document).ready(function() {
+        var cloneBehaviour;
+        var num = 1;
+        cloneBehaviour = function(ev) {
+        	var element = $('#cyanColorDraggable').clone();   	
+            var divEl = $('#cyanColorDraggable').parent();
+            debug.println("Event message" + num+ "Event on "+event.target.getAttribute("id") + " type " + event.type);
+            num++;
+            divEl.append(element);
+            element.draggable();
+           // element.mousedown(cloneBehaviour);
+        };
+        
         wireUI.connectHTML(mastermindUI);
+       // $('#cyanColorDraggable').draggable();
+        $('#cyanColorDraggable').mouseover(cloneBehaviour);
     });
     </script> 
   </head>
   <body style="background: #000000; margin: 0pt; " onload="onPageLoad();">
-<!-- DEBUG CONTROLS 
+
 <table> 
 	<tr>
 		<td> <a href="#" onclick="{return debug.displayDebugInfo();}">Debug Information</a></td>
@@ -39,7 +56,7 @@
 	</tr>	
 </table>
 <div style="background:green" id="Mastermind.html:displayDebugInfo"></div>
-  END DEBUG CONTROLS -->
+ 
   
     <div style="text-align: center; ">
       <div style="margin-bottom: 0px; margin-left: auto; margin-right: auto; margin-top: 0px; overflow: hidden; position: relative;  background: #000000; text-align: left; width: 700px; " id="body_content">
@@ -79,6 +96,10 @@
 <img src="" title="" id="violetColor" style="height: 36px; left: 478px; position: absolute; top: 283px; width: 36px; z-index: 1; " />
 
 <img src="" title="" id="cyanColor" style="height: 36px; left: 478px; position: absolute; top: 329px; width: 36px; z-index: 1; " />
+
+<div class="CloneOnClick">
+<img src="" title="" id="cyanColorDraggable" style="height: 36px; left: 578px; position: absolute; top: 329px; width: 36px; z-index: 1; " />
+</div>
 
 <img src="" title="" id="pegHole0.0" style="height: 46px; left: 68px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
 
@@ -224,26 +245,6 @@
 <img src="" title="" id="resultPegHole7.2" style="height: 25px; left: 323px; position: absolute; top: 11px; width: 25px; z-index: 1; " />
 
 <img src="" title="" id="resultPegHole7.0" style="height: 25px; left: 323px; position: absolute; top: 37px; width: 25px; z-index: 1; " />
-
-<!--
-
-<img src="" title="" id="pegRow0" style="height: 61px; left: 47px; position: absolute; top: 411px; width: 257px; z-index: 1; " />
-
-<img src="" title="" id="pegRow1" style="height: 61px; left: 47px; position: absolute; top: 354px; width: 257px; z-index: 1; " />
-
-<img src="" title="" id="pegRow2" style="height: 61px; left: 47px; position: absolute; top: 296px; width: 257px; z-index: 1; " />
-
-<img src="" title="" id="pegRow3" style="height: 61px; left: 47px; position: absolute; top: 238px; width: 257px; z-index: 1; " />
-
-<img src="" title="" id="pegRow4" style="height: 61px; left: 47px; position: absolute; top: 180px; width: 257px; z-index: 1; " />
-
-<img src="" title="" id="pegRow5" style="height: 61px; left: 47px; position: absolute; top: 122px; width: 257px; z-index: 1; " />
-
-<img src="" title="" id="pegRow6" style="height: 61px; left: 47px; position: absolute; top: 64px; width: 257px; z-index: 1; " />
-
-<img src="" title="" id="pegRow7" style="height: 61px; left: 47px; position: absolute; top: 6px; width: 257px; z-index: 1; " />
-
--->
 
 <img src="" title="" id="pegDelimiter0.0" style="height: 60px; left: 62px; position: absolute; top: 413px; width: 56px; z-index: 1; " />
 
