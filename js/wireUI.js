@@ -4,9 +4,7 @@ function WireUI() {
 	this.firstRun = true; //to avoid reconnecting event handlers
 }
 
-WireUI.prototype.connectHTML = function (mastermindUI) {
-  //debug.println("wiring UI"); 
-  //debug.println("mmUI"+mastermindUI); 
+WireUI.prototype.connectHTML = function (mastermindUI) {  
   var id = function(str, i, j) {
 	  return "#"+str+i+"\\."+j;
   };
@@ -114,6 +112,27 @@ WireUI.prototype.connectHTML = function (mastermindUI) {
   $(mastermindUI.mkId("pegDelimiter",mastermindUI.pegRowCursor,mastermindUI.pegCursor)).attr("src",pngFileMap.chosenPegDelimiter());
   document.getElementById("colorDelimiter"+mastermindUI.colorCursor).src = pngFileMap.chosenPegDelimiter();   
 
+  var cloneBehaviour;
+  var num = 1;
+  cloneBehaviour = function(ev) {
+  	var element = $('#cyanColorDraggable').clone();   	
+      var divEl = $('#cyanColorDraggable').parent();
+      debug.println("Event message" + num+ "Event on "+ev.target.getAttribute("id") + " type " + ev.type);
+      num++;
+      divEl.append(element);
+      element.draggable();
+  };
+  
+  $('#cyanColorDraggable').mouseover(cloneBehaviour);
+  
+  $("img[id*='pegDelimiter']").each(function(i) {
+	  $(this).droppable({
+		  hoverClass: 'ui-state-active',
+		  drop: function(ev,ui) {
+		      debug.println("Drop Event on "+ev.target.getAttribute("id") + " type " + ev.type);
+	      }
+	  });
+  });
 
   this.firstRun = false;
 }

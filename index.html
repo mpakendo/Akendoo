@@ -11,6 +11,7 @@
     <meta name="description" content="Simple Mastermind game"/>
     <title>Simple Mind</title>
     <link rel="stylesheet" type="text/css" media="screen" href="Mastermind_files/Mastermind.css" />
+    <link rel="stylesheet" type="text/css" href="ui-theme-base/ui.all.css" />
     <script type="text/javascript" src="Mastermind_files/Mastermind.js"></script>
     <script type="text/javascript" src="js/PNGFileMap.js"></script>
     <script type="text/javascript" src="js/jquery-1.3.2.js"></script>
@@ -27,22 +28,8 @@
     
     mastermindUI.initialize();
     
-    $(document).ready(function() {
-        var cloneBehaviour;
-        var num = 1;
-        cloneBehaviour = function(ev) {
-        	var element = $('#cyanColorDraggable').clone();   	
-            var divEl = $('#cyanColorDraggable').parent();
-            debug.println("Event message" + num+ "Event on "+event.target.getAttribute("id") + " type " + event.type);
-            num++;
-            divEl.append(element);
-            element.draggable();
-           // element.mousedown(cloneBehaviour);
-        };
-        
+    $(document).ready(function() {    
         wireUI.connectHTML(mastermindUI);
-       // $('#cyanColorDraggable').draggable();
-        $('#cyanColorDraggable').mouseover(cloneBehaviour);
     });
     </script> 
   </head>
@@ -97,9 +84,7 @@
 
 <img src="" title="" id="cyanColor" style="height: 36px; left: 478px; position: absolute; top: 329px; width: 36px; z-index: 1; " />
 
-<div class="CloneOnClick">
 <img src="" title="" id="cyanColorDraggable" style="height: 36px; left: 578px; position: absolute; top: 329px; width: 36px; z-index: 1; " />
-</div>
 
 <img src="" title="" id="pegHole0.0" style="height: 46px; left: 68px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
 
