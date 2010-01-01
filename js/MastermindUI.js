@@ -49,6 +49,24 @@ MastermindUI.prototype.revealCode = function() {
 	  });
 }
 
+MastermindUI.prototype.getCoordinatesFromEvent = function (event) {
+	 var coordinates; 
+	 var id;
+	 if (!event) event = window.event;
+	 if (!event.target) { //IE
+		 id = event.srcElement.getAttribute("id");
+	 }
+	 else { // Mozilla
+		 id = event.target.getAttribute("id");
+	 }
+	 coordinates = id.match(new RegExp("([0-9])","g"));
+	 
+	 if (coordinates == null || id.match(new RegExp("peg[0-9].[0-9]") == null)) {
+		 throw "Event id mismatch"+id;
+	 }	 
+	 return coordinates;
+};
+
 MastermindUI.prototype.initialize =function () {
  var colors = ["redPeg", "greenPeg", "bluePeg","yellowPeg","cyanPeg", "violetPeg"];
  var selectedColors = {redPeg:false,greenPeg:false,bluePeg:false,yellowPeg:false,cyanPeg:false,violetPeg:false};
@@ -83,6 +101,71 @@ MastermindUI.prototype.initialize =function () {
   this.pegRowCursor = 0;
   this.pegCursor = 0;
   this.colorChoice ="cyanPeg";
+};
+
+
+MastermindUI.prototype.setUpDragNDrop = function () {
+	 var cloneBehaviour;
+	  cloneBehaviour = function(ev) {	 
+		  var id = ev.target.getAttribute("id");
+	      var divEl = $('#'+id).parent();
+	      var element = $('#'+id).clone();
+	      var dateString = new Date();
+	      idString = id.toString() + dateString.toUTCString();
+	      $(element).attr("id", idString);
+	      debug.println("Event on "+ev.target.getAttribute("id") + " type " + ev.type);
+	      divEl.append(element);
+	      element.draggable({
+	    	  start: function(ev,ui) {debug.println("Drag Start Event on "+ev.target.getAttribute("id") + " type " + ev.type);},
+	    	  stop: function(ev,ui) {
+	    		      debug.println("Drag Stop Event on "+ev.target.getAttribute("id") + " type " + ev.type +
+	    		    		  " left:"+WireUI.dragDestinationLeft +" top:"+WireUI.dragDestinationTop ); //HACK?
+	    		      var style = ev.target.getAttribute("style"); //HACK
+	    		      debug.println("Style then:"+style);
+	    		      style = style.replace(new RegExp("left: [0-9]*px"),WireUI.dragDestinationLeft);
+	    		      style = style.replace(new RegExp("top: [0-9]*px"), WireUI.dragDestinationTop);
+	    		      debug.println("Style now:"+style);
+	    		 	 document.getElementById(ev.target.getAttribute("id")).style.left = WireUI.dragDestinationLeft;   
+	      		 	 document.getElementById(ev.target.getAttribute("id")).style.top = WireUI.dragDestinationTop;     		   
+	    		      }
+	       });
+	  };
+	  
+	  $('#cyanColorDraggable').mouseover(cloneBehaviour);
+	  
+	  
+	  
+	  for (i = 0; i <= MastermindUI.PEGROWCOUNT; i++) {
+		  for (j = 0; j <= MastermindUI.PEGCOUNT; j++) {
+			  $(this.mkId("peg",i,j)).droppable({
+				  // hoverClass: 'ui-state-active',
+				  over: function(ev,ui) { //HACK. Still need cross browser event extraction
+				    // var coordinates;
+				  	//coordinates = mastermindUI.getCoordinatesFromEvent(ev);
+				    debug.println("Over Event on "+ev.target.getAttribute("id") + " type " + ev.type);
+				    
+				  	 //$("#"+ ev.target.getAttribute("id")).attr("src",pngFileMap.hiddenCodePeg());  does not work
+				     // due to necessity to escape . in "peg1.0"
+				  	 document.getElementById(ev.target.getAttribute("id")).src = pngFileMap.hiddenCodePeg();   
+
+			  	  },
+			      out: function(ev,ui) {
+					  	debug.println("Over Event on "+ev.target.getAttribute("id") + " type " + ev.type);
+					  	 document.getElementById(ev.target.getAttribute("id")).src = pngFileMap.emptyPeg();   
+				  },
+				  drop: function(ev,ui) { //HACK.
+						var style = ev.target.getAttribute("style");
+						var left = style.match(new RegExp("left: [0-9]*px"));
+						var top = style.match(new RegExp("top: [0-9]*px"));
+						 debug.println("DEBUG left "+ left + " top "+ top);
+						   
+						WireUI.dragDestinationLeft = left[0].match(new RegExp("[0-9]*px")); //HACK? Very Global variable..
+						WireUI.dragDestinationTop = top[0].match(new RegExp("[0-9]*px"));;
+				      debug.println("Drop Event on "+ev.target.getAttribute("id") + " type " + ev.type + " left "+ WireUI.dragDestinationLeft + " top "+ WireUI.dragDestinationTop);
+			      }
+			  });
+		  }
+	  } 
 };
 
 MastermindUI.prototype.playAgainHandler = function (event) {
