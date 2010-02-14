@@ -1,5 +1,7 @@
 // MastermindUI: actions for the UI defined in Mastermind.html
 
+var pngFileMap = new PNGFileMap();
+
 function MastermindUI() {
 	this.UI = null;
     this.pegs = [];
@@ -13,6 +15,7 @@ function MastermindUI() {
     	
 }
 
+	
 MastermindUI.PEGROWCOUNT = 7; // 0-7
 MastermindUI.PEGCOUNT = 3; // 0-3
 MastermindUI.COLORCOUNT = 5; // 0-6
@@ -104,10 +107,10 @@ MastermindUI.prototype.initialize =function () {
 };
 
 
-MastermindUI.prototype.setUpDragNDrop = function () {
+MastermindUI.prototype.setUpDragNDrop = function (mastermindUI) {
 	 var cloneBehaviour;
 	  cloneBehaviour = function(ev) {	 
-		  var id = ev.target.getAttribute("id");
+		  var id = ev.target.getAttribute("id"); // ToDo: make this work for mozilla and IE
 	      var divEl = $('#'+id).parent();
 	      var element = $('#'+id).clone();
 	      var dateString = new Date();
@@ -116,11 +119,29 @@ MastermindUI.prototype.setUpDragNDrop = function () {
 	      debug.println("Event on "+ev.target.getAttribute("id") + " type " + ev.type);
 	      divEl.append(element);
 	      element.draggable({
-	    	  start: function(ev,ui) {debug.println("Drag Start Event on "+ev.target.getAttribute("id") + " type " + ev.type);},
+	    	  start: function(ev,ui) {
+	    	         
+	    			  var domId = ev.target.getAttribute("id"); // ToDo: make this work for mozilla and IE
+	    			  var style = ev.target.getAttribute("style");
+					  var left = style.match(new RegExp("left: [0-9]*px"));
+				      var top = style.match(new RegExp("top: [0-9]*px"));
+						 
+				      var pegChoice = domId.match(new RegExp("green|red|blue|yellow|violet|cyan"));
+				      if (pegChoice == null)
+				    	  throw "Invalid Event Id:"+domId;
+				      mastermindUI.colorChoice = pegChoice[0]+"Peg";
+						   
+						WireUI.dragDestinationLeft = left[0].match(new RegExp("[0-9]*px")); //HACK? Very Global variable..
+						WireUI.dragDestinationTop = top[0].match(new RegExp("[0-9]*px"));;
+	    		      
+	    		      debug.println("Drag Start Event on "+domId + " type " + ev.type +
+	    		    		  " left:"+WireUI.dragDestinationLeft +" top:"+WireUI.dragDestinationTop ); //HACK?
+
+	      },
 	    	  stop: function(ev,ui) {
 	    		      debug.println("Drag Stop Event on "+ev.target.getAttribute("id") + " type " + ev.type +
 	    		    		  " left:"+WireUI.dragDestinationLeft +" top:"+WireUI.dragDestinationTop ); //HACK?
-	    		      var style = ev.target.getAttribute("style"); //HACK
+	    		      var style = ev.target.getAttribute("style"); //ToDo: IE
 	    		      debug.println("Style then:"+style);
 	    		      style = style.replace(new RegExp("left: [0-9]*px"),WireUI.dragDestinationLeft);
 	    		      style = style.replace(new RegExp("top: [0-9]*px"), WireUI.dragDestinationTop);
@@ -130,19 +151,26 @@ MastermindUI.prototype.setUpDragNDrop = function () {
 	    		      }
 	       });
 	  };
-	  
-	  $('#cyanColorDraggable').mouseover(cloneBehaviour);
-	  
+
+	   $("#redColorDraggable").mouseover(cloneBehaviour);
+	   $("#greenColorDraggable").mouseover(cloneBehaviour);
+	   $("#yellowColorDraggable").mouseover(cloneBehaviour);
+	   $("#blueColorDraggable").mouseover(cloneBehaviour);
+	   $("#violetColorDraggable").mouseover(cloneBehaviour);
+	   $("#cyanColorDraggable").mouseover(cloneBehaviour);
+  
 	  
 	  
 	  for (i = 0; i <= MastermindUI.PEGROWCOUNT; i++) {
 		  for (j = 0; j <= MastermindUI.PEGCOUNT; j++) {
 			  $(this.mkId("peg",i,j)).droppable({
 				  // hoverClass: 'ui-state-active',
-				  over: function(ev,ui) { //HACK. Still need cross browser event extraction
-				    // var coordinates;
-				  	//coordinates = mastermindUI.getCoordinatesFromEvent(ev);
+				  over: function(ev,ui) { //ToDo. Still need cross browser event extraction
+				    var coordinates = mastermindUI.getCoordinatesFromEvent(ev);
+				     mastermindUI.pegRowCursor = coordinates[0];
+					 mastermindUI.pegCursor = coordinates[1];
 				    debug.println("Over Event on "+ev.target.getAttribute("id") + " type " + ev.type);
+				    debug.println("Coordinates:"+mastermindUI.pegRowCursor+"."+mastermindUI.pegCursor);
 				    
 				  	 //$("#"+ ev.target.getAttribute("id")).attr("src",pngFileMap.hiddenCodePeg());  does not work
 				     // due to necessity to escape . in "peg1.0"
@@ -158,9 +186,10 @@ MastermindUI.prototype.setUpDragNDrop = function () {
 						var left = style.match(new RegExp("left: [0-9]*px"));
 						var top = style.match(new RegExp("top: [0-9]*px"));
 						 debug.println("DEBUG left "+ left + " top "+ top);
-						   
+						 
+						mastermindUI.pegs[mastermindUI.pegRowCursor][mastermindUI.pegCursor] = mastermindUI.colorChoice;   
 						WireUI.dragDestinationLeft = left[0].match(new RegExp("[0-9]*px")); //HACK? Very Global variable..
-						WireUI.dragDestinationTop = top[0].match(new RegExp("[0-9]*px"));;
+						WireUI.dragDestinationTop = top[0].match(new RegExp("[0-9]*px"));;  // Use mastermindUI instead
 				      debug.println("Drop Event on "+ev.target.getAttribute("id") + " type " + ev.type + " left "+ WireUI.dragDestinationLeft + " top "+ WireUI.dragDestinationTop);
 			      }
 			  });
@@ -228,8 +257,8 @@ MastermindUI.prototype.choosePegHandler = function (event) {
 	 var previousPegRowCursor = this.pegRowCursor;
 	 var previousPegCursor = this.pegCursor;
 	 var id; 
-	 var coordinates; 
-	 if (!event) event = window.event;
+	 var coordinates = this.getCoordinatesFromEvent(event); 
+	/* if (!event) event = window.event;
 	 if (!event.target) { //IE
 		 id = event.srcElement.getAttribute("id");
 	 }
@@ -241,7 +270,7 @@ MastermindUI.prototype.choosePegHandler = function (event) {
 	 if (coordinates == null || id.match(new RegExp("peg[0-9].[0-9]") == null)) {
 		 //debug.printf("Event id mismatch. Expected pegX.Y - got:"+id);
 		 throw "Event id mismatch"+id;
-	 }	 
+	 }	 */
 	 this.pegRowCursor = coordinates[0];
 	 this.pegCursor = coordinates[1];
 
@@ -291,6 +320,3 @@ MastermindUI.prototype.chooseColorHandler = function (event) {
 	 document.getElementById("colorDelimiter"+previousColorCursor).src = pngFileMap.pegDelimiter();  
 	 document.getElementById("colorDelimiter"+this.colorCursor).src = pngFileMap.chosenPegDelimiter();   
 	};
-
-
-

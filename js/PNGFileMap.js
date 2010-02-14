@@ -146,7 +146,7 @@ PNGFileMap.prototype.bluePeg = function () {
 
 
 
-var pngFileMap = new PNGFileMap();
+
 
 
 

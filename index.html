@@ -21,15 +21,16 @@
     <script type="text/javascript" src="js/MastermindUI.js"></script>
     <script type="text/javascript" src="js/wireUI.js"> </script> 
     <script>
-    var mastermindUI = new MastermindUI();
-    var wireUI = new WireUI();
-    mastermindUI.UI = wireUI;
-    
-    mastermindUI.initialize();
-    
-    $(document).ready(function() {    
-        wireUI.connectHTML(mastermindUI);
-        mastermindUI.setUpDragNDrop();
+   
+    $(document).ready(function() {   
+    	var mastermindUI = new MastermindUI();
+    	var wireUI = new WireUI();
+    	 mastermindUI.UI = wireUI; 
+    	    
+    	 mastermindUI.initialize();
+    	  
+         wireUI.connectHTML(mastermindUI);
+         mastermindUI.setUpDragNDrop(mastermindUI);
     });
     </script> 
   </head>
@@ -84,7 +85,19 @@
 
 <img src="" title="" id="cyanColor" style="height: 36px; left: 478px; position: absolute; top: 329px; width: 36px; z-index: 1; " />
 
+
+<img src="" title="" id="greenColorDraggable" style="height: 36px; left: 578px; position: absolute; top: 99px; width: 36px; z-index: 1; " />
+
+<img src="" title="" id="redColorDraggable" style="height: 36px; left: 578px; position: absolute; top: 145px; width: 36px; z-index: 1; " />
+
+<img src="" title="" id="yellowColorDraggable" style="height: 36px; left: 578px; position: absolute; top: 191px; width: 36px; z-index: 1; " />
+
+<img src="" title="" id="blueColorDraggable" style="height: 36px; left: 578px; position: absolute; top: 237px; width: 36px; z-index: 1; " />
+
+<img src="" title="" id="violetColorDraggable" style="height: 36px; left: 578px; position: absolute; top: 283px; width: 36px; z-index: 1; " />
+
 <img src="" title="" id="cyanColorDraggable" style="height: 36px; left: 578px; position: absolute; top: 329px; width: 36px; z-index: 1; " />
+
 
 <img src="" title="" id="pegHole0.0" style="height: 46px; left: 68px; position: absolute; top: 419px; width: 46px; z-index: 1; " />
 
