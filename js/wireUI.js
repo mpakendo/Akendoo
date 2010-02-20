@@ -5,8 +5,6 @@ function WireUI() {
 
 }
 
-WireUI.dragDestinationLeft = "0px";
-WireUI.dragDestinationTop = "0px";
 
 WireUI.prototype.connectHTML = (function() { // function called immediately purely to create a lexical block for "pngFileMap"
 	var pngFileMap = new PNGFileMap();
