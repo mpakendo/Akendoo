@@ -19,8 +19,6 @@ function MastermindUI() {
 }
 
 
-
-	
 MastermindUI.PEGROWCOUNT = 7; // 0-7
 MastermindUI.PEGCOUNT = 3; // 0-3
 MastermindUI.COLORCOUNT = 5; // 0-6
@@ -57,16 +55,26 @@ MastermindUI.prototype.revealCode = function() {
 	  });
 }
 
-MastermindUI.prototype.getCoordinatesFromEvent = function (event) {
-	 var coordinates; 
+
+
+MastermindUI.prototype.getAttrFromEvent = function (event,attr) {
 	 var id;
 	 if (!event) event = window.event;
 	 if (!event.target) { //IE
-		 id = event.srcElement.getAttribute("id");
+		 id = window.event.srcElement.getAttribute(attr);
 	 }
 	 else { // Mozilla
-		 id = event.target.getAttribute("id");
+		 id = event.target.getAttribute(attr);
 	 }
+	 return id;
+}
+
+
+
+MastermindUI.prototype.getCoordinatesFromEvent = function (event) {
+	 var coordinates; 
+	 var id = this.getAttrFromEvent(event,"id");
+	
 	 coordinates = id.match(new RegExp("([0-9])","g"));
 	 
 	 if (coordinates == null || id.match(new RegExp("peg[0-9].[0-9]") == null)) {
@@ -118,7 +126,7 @@ MastermindUI.prototype.initialize =function () {
 MastermindUI.prototype.setUpDragNDrop = function (mastermindUI) {
 	 var cloneBehaviour;
 	  cloneBehaviour = function(ev) {	 
-		  var id = ev.target.getAttribute("id"); // ToDo: make this work for mozilla and IE
+		  var id = mastermindUI.getAttrFromEvent(ev,"id");
 	      var divEl = $('#'+id).parent();
 	      var element = $('#'+id).clone();
 	      var dateString = new Date();
@@ -129,9 +137,8 @@ MastermindUI.prototype.setUpDragNDrop = function (mastermindUI) {
 	      mastermindUI.clonedColorPegs[idString] = element; // hash: cloneId->element
 	      element.draggable({
 	    	  start: function(ev,ui) {
-	    	         
-	    			  var domId = ev.target.getAttribute("id"); // ToDo: make this work for mozilla and IE
-	    			  var style = ev.target.getAttribute("style");
+	    			  var domId = mastermindUI.getAttrFromEvent(ev,"id");
+	    			  var style = mastermindUI.getAttrFromEvent(ev,"style");
 					  var left = style.match(new RegExp("left: [0-9]*px"));
 				      var top = style.match(new RegExp("top: [0-9]*px"));
 						 
@@ -148,13 +155,14 @@ MastermindUI.prototype.setUpDragNDrop = function (mastermindUI) {
 
 	      },
 	    	  stop: function(ev,ui) {
-	    		      debug.println("Drag Stop Event on "+ev.target.getAttribute("id") + " type " + ev.type +
-	    		    		  " left:"+mastermindUI.dragDestinationLeft +" top:"+mastermindUI.dragDestinationTop ); 
-	    		      var style = ev.target.getAttribute("style"); //ToDo: IE
+	    	          var domId = mastermindUI.getAttrFromEvent(ev,"id");
+			          var style = mastermindUI.getAttrFromEvent(ev,"style");
+	    		      debug.println("Drag Stop Event on "+domId + " left:"+mastermindUI.dragDestinationLeft +" top:"+mastermindUI.dragDestinationTop ); 
+	    		      
 	    		      style = style.replace(new RegExp("left: [0-9]*px"),mastermindUI.dragDestinationLeft);
 	    		      style = style.replace(new RegExp("top: [0-9]*px"), mastermindUI.dragDestinationTop);
-	    		 	 document.getElementById(ev.target.getAttribute("id")).style.left = mastermindUI.dragDestinationLeft;   
-	      		 	 document.getElementById(ev.target.getAttribute("id")).style.top = mastermindUI.dragDestinationTop;     		   
+	    		 	 document.getElementById(domId).style.left = mastermindUI.dragDestinationLeft;   
+	      		 	 document.getElementById(domId).style.top = mastermindUI.dragDestinationTop;     		   
 	    		      }
 	       });
 	  };
@@ -171,30 +179,33 @@ MastermindUI.prototype.setUpDragNDrop = function (mastermindUI) {
 	  for (i = 0; i <= MastermindUI.PEGROWCOUNT; i++) {
 		  for (j = 0; j <= MastermindUI.PEGCOUNT; j++) {
 			  $(this.mkId("peg",i,j)).droppable({
-				  over: function(ev,ui) { //ToDo. Still need cross browser event extraction
+				  over: function(ev,ui) { 
+				    var domId = mastermindUI.getAttrFromEvent(ev,"id");
 				    var coordinates = mastermindUI.getCoordinatesFromEvent(ev);
 				     mastermindUI.pegRowCursor = coordinates[0];
 					 mastermindUI.pegCursor = coordinates[1];
-				    debug.println("Over Event on "+ev.target.getAttribute("id") + " type " + ev.type);
+				    debug.println("Over Event on "+domId + " type " + ev.type);
 				    
 				  	 //$("#"+ ev.target.getAttribute("id")).attr("src",pngFileMap.hiddenCodePeg());  does not work
 				     // due to necessity to escape . in "peg1.0"
-				  	 document.getElementById(ev.target.getAttribute("id")).src = pngFileMap.hiddenCodePeg();   
+				  	 document.getElementById(domId).src = pngFileMap.hiddenCodePeg();   
 
 			  	  },
 			      out: function(ev,ui) {
-					  	debug.println("Over Event on "+ev.target.getAttribute("id") + " type " + ev.type);
-					  	 document.getElementById(ev.target.getAttribute("id")).src = pngFileMap.emptyPeg();   
+			  		    var domId = mastermindUI.getAttrFromEvent(ev,"id");
+					  	debug.println("Over Event on "+domId+ " type " + ev.type);
+					  	 document.getElementById(domId).src = pngFileMap.emptyPeg();   
 				  },
-				  drop: function(ev,ui) { //HACK.
-						var style = ev.target.getAttribute("style");
+				  drop: function(ev,ui) { 
+	    	            var domId = mastermindUI.getAttrFromEvent(ev,"id");
+			            var style = mastermindUI.getAttrFromEvent(ev,"style");
 						var left = style.match(new RegExp("left: [0-9]*px"));
 						var top = style.match(new RegExp("top: [0-9]*px"));
 						 
 						mastermindUI.pegs[mastermindUI.pegRowCursor][mastermindUI.pegCursor] = mastermindUI.colorChoice;   
 						mastermindUI.dragDestinationLeft = left[0].match(new RegExp("[0-9]*px")); 
 						mastermindUI.dragDestinationTop = top[0].match(new RegExp("[0-9]*px"));
-				      debug.println("Drop Event on "+ev.target.getAttribute("id") + " type " + ev.type + " left "+ mastermindUI.dragDestinationLeft + " top "+ mastermindUI.dragDestinationTop);
+				      debug.println("Drop Event on "+domId  + " left "+ mastermindUI.dragDestinationLeft + " top "+ mastermindUI.dragDestinationTop);
 			      }
 			  });
 		  }
@@ -264,14 +275,8 @@ MastermindUI.prototype.choosePegHandler = function (event) {
 
 MastermindUI.prototype.chooseColorHandler = function (event) {
 	 var previousColorCursor = this.colorCursor;
-	 var id;
-	 if (!event) event = window.event;
-	 if (!event.target) { //IE
-		 id = window.event.srcElement.getAttribute("id");
-	 }
-	 else { // Mozilla
-		 id = event.target.getAttribute("id");
-	 }
+	 var id = this.getAttrFromEvent(event,"id");
+
 	 switch (id) {
 	 case "colorDelimiter0":
 		 this.colorChoice = "cyanPeg";
