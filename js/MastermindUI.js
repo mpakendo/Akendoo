@@ -12,11 +12,18 @@ function MastermindUI() {
     this.pegCursor = 0;
     this.colorChoice ="noPeg";
     this.mkId = function(str, i, j) {return "#"+str+i+"\\."+j;}; 
+    // Use these to communicate from droppable to draggable - DROP event to STOP event:
     this.dragDestinationLeft = "0px";
     this.dragDestinationTop = "0px";
-    this.clonedColorPegs = {};
+    this.canDrop = false;
+    
+    this.cloneCount = 0;
+    this.clonedPegs = {};
+    this.placedPegs = [];
+    this.debug = false;
     	
-}
+};
+
 
 
 MastermindUI.PEGROWCOUNT = 7; // 0-7
@@ -24,13 +31,56 @@ MastermindUI.PEGCOUNT = 3; // 0-3
 MastermindUI.COLORCOUNT = 5; // 0-6
 
 
+MastermindUI.prototype.printPlacedPegs = function () {
+	debug.println("");
+	for (var i = MastermindUI.PEGROWCOUNT; i>=0; i--) {
+		for (var j = 0; j<=MastermindUI.PEGCOUNT; j++) {
+			var shapeTxt;
+			var shapeDesc = this.placedPegs[i][j].shape.match(
+					new RegExp("shapeimage_101|shapeimage_169|shapeimage_2|shapeimage_3|shapeimage_4|shapeimage_5|shapeimage_6|shapeimage_1"));
+			
+			switch (shapeDesc[0]) {
+			case "shapeimage_1": 
+				shapeTxt = "green";
+				break;
+			case "shapeimage_2":
+				shapeTxt = "red";
+				break;
+			case "shapeimage_3":
+				shapeTxt = "yellow";
+				break;
+			case "shapeimage_4":
+				shapeTxt = "blue";
+				break;
+			case "shapeimage_5":
+				shapeTxt = "violet";
+				break;
+			case "shapeimage_6":
+				shapeTxt = "cyan";
+				break;
+			case "shapeimage_101":
+				shapeTxt = "emptyPeg";
+				break;
+			case null:
+				shapeTxt = "null";
+				break;
+			
+			}; 
+			
+			debug.printf("["+this.placedPegs[i][j].id+":"+shapeTxt+"]");
+		};
+		debug.println("");
+	};
+};
+		
+
 MastermindUI.prototype.checkForCodeAndRemove = function(arr, str) {
 	for (var i=0; i<=arr.length;i++) {
 		if (arr[i]==str) {
 			arr[i] = "FOUND";
 			return true;
-		}
-	 }
+		};
+	 };
 	return false;
 };
 
@@ -53,7 +103,7 @@ MastermindUI.prototype.revealCode = function() {
 		  this.src= pngFileMap.url(mmUI.colorCode[k]);	
 		  k++;
 	  });
-}
+};
 
 
 
@@ -67,7 +117,7 @@ MastermindUI.prototype.getAttrFromEvent = function (event,attr) {
 		 id = event.target.getAttribute(attr);
 	 }
 	 return id;
-}
+};
 
 
 
@@ -83,10 +133,11 @@ MastermindUI.prototype.getCoordinatesFromEvent = function (event) {
 	 return coordinates;
 };
 
+
 MastermindUI.prototype.initialize =function () {
  var colors = ["redPeg", "greenPeg", "bluePeg","yellowPeg","cyanPeg", "violetPeg"];
  var selectedColors = {redPeg:false,greenPeg:false,bluePeg:false,yellowPeg:false,cyanPeg:false,violetPeg:false};
- 
+
  for (var i = 0; i<= MastermindUI.PEGCOUNT; i++) {
 	 var rnd = Math.floor(Math.random()*(MastermindUI.COLORCOUNT+1));
 	 var randomChoice = colors[rnd];	 
@@ -115,97 +166,127 @@ MastermindUI.prototype.initialize =function () {
   this.pegCursor = 0;
   this.colorChoice ="cyanPeg";
   
-  for (i in this.clonedColorPegs) {
-	  this.clonedColorPegs[i].remove();
+  for (i in this.clonedPegs) {
+	  this.clonedPegs[i].remove();
   };
-  this.clonedColorPegs = {};
+  this.clonedPegs = {};
   
+// This is not elegant. Where is malloc for JS? ->:
+
+  this.placedPegs = [
+              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
+              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
+              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
+              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
+              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
+              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
+              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
+              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
+             ];
+  this.cloneCount=0;
+  this.canDrop=false;
+ 
 };
 
 
-MastermindUI.prototype.setUpDragNDrop = function (mastermindUI) {
+		
+
+MastermindUI.prototype.setUpDrag = function (mUI) {
 	 var cloneBehaviour;
 	  cloneBehaviour = function(ev) {	 
-		  var id = mastermindUI.getAttrFromEvent(ev,"id");
+		  var id = mUI.getAttrFromEvent(ev,"id");
 	      var divEl = $('#'+id).parent();
 	      var element = $('#'+id).clone();
 	      var dateString = new Date();
-	      idString = id.toString() + dateString.toUTCString();
+	      idString = id.toString() + mUI.cloneCount;
+	      mUI.cloneCount++;
 	      $(element).attr("id", idString);
-	      debug.println("Event on "+ev.target.getAttribute("id") + " type " + ev.type);
 	      divEl.append(element);
-	      mastermindUI.clonedColorPegs[idString] = element; // hash: cloneId->element
+	      mUI.clonedPegs[idString] = element; // hash: cloneId->element
 	      element.draggable({
 	    	  start: function(ev,ui) {
-	    			  var domId = mastermindUI.getAttrFromEvent(ev,"id");
-	    			  var style = mastermindUI.getAttrFromEvent(ev,"style");
+	    			  var domId = mUI.getAttrFromEvent(ev,"id");
+	    			  var style = mUI.getAttrFromEvent(ev,"style");
 					  var left = style.match(new RegExp("left: [0-9]*px"));
 				      var top = style.match(new RegExp("top: [0-9]*px"));
-						 
+	    		      if (mUI.debug) debug.println("START Event on "+domId); 
+	    		 	 		 
 				      var pegChoice = domId.match(new RegExp("green|red|blue|yellow|violet|cyan"));
 				      if (pegChoice == null)
 				    	  throw "Invalid Event Id:"+domId;
-				      mastermindUI.colorChoice = pegChoice[0]+"Peg";
-						   
-					  mastermindUI.dragDestinationLeft = left[0].match(new RegExp("[0-9]*px")); 
-					  mastermindUI.dragDestinationTop = top[0].match(new RegExp("[0-9]*px"));;
-	    		      
-	    		      debug.println("Drag Start Event on "+domId + " type " + ev.type +
-	    		    		  " left:"+mastermindUI.dragDestinationLeft +" top:"+mastermindUI.dragDestinationTop ); 
-
-	      },
+				      mUI.colorChoice = pegChoice[0]+"Peg";				      
+				      mUI.dragDestinationLeft = document.getElementById(pegChoice[0]+"ColorDraggable").style.left; 
+					  mUI.dragDestinationTop = document.getElementById(pegChoice[0]+"ColorDraggable").style.top;
+					  mUI.canDrop = false;
+	      	  },
 	    	  stop: function(ev,ui) {
-	    	          var domId = mastermindUI.getAttrFromEvent(ev,"id");
-			          var style = mastermindUI.getAttrFromEvent(ev,"style");
-	    		      debug.println("Drag Stop Event on "+domId + " left:"+mastermindUI.dragDestinationLeft +" top:"+mastermindUI.dragDestinationTop ); 
-	    		      
-	    		      style = style.replace(new RegExp("left: [0-9]*px"),mastermindUI.dragDestinationLeft);
-	    		      style = style.replace(new RegExp("top: [0-9]*px"), mastermindUI.dragDestinationTop);
-	    		 	 document.getElementById(domId).style.left = mastermindUI.dragDestinationLeft;   
-	      		 	 document.getElementById(domId).style.top = mastermindUI.dragDestinationTop;     		   
-	    		      }
+	    	          var domId = mUI.getAttrFromEvent(ev,"id");
+			          var style = mUI.getAttrFromEvent(ev,"style");
+	    		      if (mUI.debug) debug.println("STOP Event on "+domId); 
+	    		      style = style.replace(new RegExp("left: [0-9]*px"),mUI.dragDestinationLeft);
+	    		      style = style.replace(new RegExp("top: [0-9]*px"), mUI.dragDestinationTop);
+	    		 	  document.getElementById(domId).style.left = mUI.dragDestinationLeft;   
+	      		 	  document.getElementById(domId).style.top = mUI.dragDestinationTop;
+	      		 	  if (mUI.canDrop) {
+	      		 		  mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].id=domId;
+	      		 		  mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].shape=document.getElementById(domId).src;
+	      		 	  };
+	      	  }
 	       });
 	  };
-
 	   $("#redColorDraggable").mouseover(cloneBehaviour);
 	   $("#greenColorDraggable").mouseover(cloneBehaviour);
 	   $("#yellowColorDraggable").mouseover(cloneBehaviour);
 	   $("#blueColorDraggable").mouseover(cloneBehaviour);
 	   $("#violetColorDraggable").mouseover(cloneBehaviour);
 	   $("#cyanColorDraggable").mouseover(cloneBehaviour);
-  
-	  
-	  
-	  for (i = 0; i <= MastermindUI.PEGROWCOUNT; i++) {
-		  for (j = 0; j <= MastermindUI.PEGCOUNT; j++) {
+};
+
+
+MastermindUI.prototype.setUpDrop = function (mUI) {
+	  for (var i = 0; i <= MastermindUI.PEGROWCOUNT; i++) {
+		  for (var j = 0; j <= MastermindUI.PEGCOUNT; j++) {
 			  $(this.mkId("peg",i,j)).droppable({
 				  over: function(ev,ui) { 
-				    var domId = mastermindUI.getAttrFromEvent(ev,"id");
-				    var coordinates = mastermindUI.getCoordinatesFromEvent(ev);
-				     mastermindUI.pegRowCursor = coordinates[0];
-					 mastermindUI.pegCursor = coordinates[1];
-				    debug.println("Over Event on "+domId + " type " + ev.type);
-				    
-				  	 //$("#"+ ev.target.getAttribute("id")).attr("src",pngFileMap.hiddenCodePeg());  does not work
-				     // due to necessity to escape . in "peg1.0"
-				  	 document.getElementById(domId).src = pngFileMap.hiddenCodePeg();   
-
+				    var domId = mUI.getAttrFromEvent(ev,"id");
+				    var coordinates = mUI.getCoordinatesFromEvent(ev);
+				     mUI.pegRowCursor = coordinates[0];
+					 mUI.pegCursor = coordinates[1];
+				  	 if (mUI.debug) debug.println("OVER Event on "+ domId);
+				  	 if(mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].id != "empty") { 
+				  		domId =  mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].id;
+				  	 };
+				  	 document.getElementById(domId).src = pngFileMap.hiddenCodePeg();
+				  	 mUI.canDrop = true;
+				  	 
 			  	  },
 			      out: function(ev,ui) {
-			  		    var domId = mastermindUI.getAttrFromEvent(ev,"id");
-					  	debug.println("Over Event on "+domId+ " type " + ev.type);
-					  	 document.getElementById(domId).src = pngFileMap.emptyPeg();   
+			  		    var domId = mUI.getAttrFromEvent(ev,"id");
+			  		    var coordinates = mUI.getCoordinatesFromEvent(ev);
+					     mUI.pegRowCursor = coordinates[0];
+						 mUI.pegCursor = coordinates[1];
+					  	if (mUI.debug) debug.println("OUT Event on "+domId);
+					  	if(mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].id != "empty") { 
+					  		 // we retrieve the previously stored domId and color this back..
+					  		domId =  mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].id;
+					  		document.getElementById(domId).src = mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].shape;   
+					  	 }
+					  	else {
+					  	 document.getElementById(domId).src = pngFileMap.emptyPeg();
+					  	};
+					  	mUI.canDrop = false;
 				  },
 				  drop: function(ev,ui) { 
-	    	            var domId = mastermindUI.getAttrFromEvent(ev,"id");
-			            var style = mastermindUI.getAttrFromEvent(ev,"style");
+	    	            var domId = mUI.getAttrFromEvent(ev,"id");
+			            var style = mUI.getAttrFromEvent(ev,"style");
 						var left = style.match(new RegExp("left: [0-9]*px"));
 						var top = style.match(new RegExp("top: [0-9]*px"));
-						 
-						mastermindUI.pegs[mastermindUI.pegRowCursor][mastermindUI.pegCursor] = mastermindUI.colorChoice;   
-						mastermindUI.dragDestinationLeft = left[0].match(new RegExp("[0-9]*px")); 
-						mastermindUI.dragDestinationTop = top[0].match(new RegExp("[0-9]*px"));
-				      debug.println("Drop Event on "+domId  + " left "+ mastermindUI.dragDestinationLeft + " top "+ mastermindUI.dragDestinationTop);
+				        if (mUI.debug) debug.println("DROP Event on "+domId);
+					 
+						mUI.pegs[mUI.pegRowCursor][mUI.pegCursor] = mUI.colorChoice;  
+						mUI.dragDestinationLeft = left[0].match(new RegExp("[0-9]*px")); 
+						mUI.dragDestinationTop = top[0].match(new RegExp("[0-9]*px"));
+						ui.draggable.draggable("disable", 1);
 			      }
 			  });
 		  }
@@ -214,6 +295,7 @@ MastermindUI.prototype.setUpDragNDrop = function (mastermindUI) {
 
 MastermindUI.prototype.playAgainHandler = function (event) {
 	  alert("Play again!");
+	  this.printPlacedPegs();
 	  this.initialize();
 	  this.UI.connectHTML(this);
 };
@@ -221,6 +303,10 @@ MastermindUI.prototype.playAgainHandler = function (event) {
 MastermindUI.prototype.setColorHandler = function (event) {
   $(this.mkId("peg",this.pegRowCursor,this.pegCursor)).attr("src",pngFileMap.url(this.colorChoice));
   this.pegs[this.pegRowCursor][this.pegCursor] = this.colorChoice;
+  if (this.debug) 
+	  this.debug = false;
+  else
+	  this.debug = true;
  };
 
 MastermindUI.prototype.buttonOKHandler = function(event) {

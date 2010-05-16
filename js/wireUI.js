@@ -27,10 +27,6 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
 	   $("#violetColorDraggable").attr("src", pngFileMap.violetPeg());
 	   $("#cyanColorDraggable").attr("src", pngFileMap.cyanPeg());
 	   
-	   
-	   //WireUI.dragDestinationLeft = $("#cyanColorDraggable").css("left"); chuck out asap
-	   //WireUI.dragDestinationTop = $("#cyanColorDraggable").css("top");;
-
 
 	   //console.log($("img[@id^=pegRow]"));
 

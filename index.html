@@ -26,11 +26,11 @@
     	var mastermindUI = new MastermindUI();
     	var wireUI = new WireUI();
     	 mastermindUI.UI = wireUI; 
-    	    
-    	 mastermindUI.initialize();
-    	  
+    	 mastermindUI.initialize();   
          wireUI.connectHTML(mastermindUI);
-         mastermindUI.setUpDragNDrop(mastermindUI);
+         
+         mastermindUI.setUpDrag(mastermindUI);
+         mastermindUI.setUpDrop(mastermindUI);
     });
     </script> 
   </head>
