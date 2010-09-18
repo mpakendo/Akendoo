@@ -3,6 +3,7 @@ function Debug() {
 	this.displayingDebugInfo = false;
 	this.debugInfo = "DEBUG DATA:";
 	this.debugElementId = "Mastermind.html:displayDebugInfo";
+	this.UI = null; // HACK.
 }
 
 Debug.prototype.displayDebugInfo = function () {

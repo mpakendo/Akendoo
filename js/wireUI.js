@@ -12,14 +12,14 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
        var id = function(str, i, j) {
     	   return "#"+str+i+"\\."+j;
        };
-       
+/*       
 	   $("#redColor").attr("src", pngFileMap.redPeg());
 	   $("#greenColor").attr("src",pngFileMap.greenPeg());
 	   $("#yellowColor").attr("src", pngFileMap.yellowPeg());
 	   $("#blueColor").attr("src", pngFileMap.bluePeg());
 	   $("#violetColor").attr("src", pngFileMap.violetPeg());
 	   $("#cyanColor").attr("src", pngFileMap.cyanPeg());
-  
+*/  
 	   $("#redColorDraggable").attr("src", pngFileMap.redPeg());
 	   $("#greenColorDraggable").attr("src",pngFileMap.greenPeg());
 	   $("#yellowColorDraggable").attr("src", pngFileMap.yellowPeg());
@@ -90,15 +90,17 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
 	   });    
 
 	   $("#hiddenCodeRow").attr("src", pngFileMap.pegRowHighlighted());
-	   $("#pegChooserArrowLeft").attr("src", pngFileMap.pegChooserArrowLeft());
+	   //$("#pegChooserArrowLeft").attr("src", pngFileMap.pegChooserArrowLeft());
 	   $("#buttonOk").attr("src",pngFileMap.buttonImage());
 	   $("#buttonOkIcon").attr("src",pngFileMap.buttonOkIcon());
 	   $("#buttonPlayAgain").attr("src",pngFileMap.buttonImage());  
 
 	   if (this.firstRun) {
+		   /*
 		   $("#pegChooserArrowLeft").click(function(event){
 			   mastermindUI.setColorHandler(event);
 		   });
+		   */
 		   $("#buttonPlayAgain").click(function(event){
 			   mastermindUI.playAgainHandler(event);
 		   });  
@@ -117,10 +119,10 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
 
 	   }
 
-	   // Not sure which DOM access and setter is better. Old school vs. Jquery:
+	   /* Not sure which DOM access and setter is better. Old school vs. Jquery:
 	   $(mastermindUI.mkId("pegDelimiter",mastermindUI.pegRowCursor,mastermindUI.pegCursor)).attr("src",pngFileMap.chosenPegDelimiter());
 	   document.getElementById("colorDelimiter"+mastermindUI.colorCursor).src = pngFileMap.chosenPegDelimiter();   
-
+*/
 
 
 	   this.firstRun = false;

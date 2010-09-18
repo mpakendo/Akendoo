@@ -18,6 +18,7 @@ function MastermindUI() {
     this.canDrop = false;
     
     this.cloneCount = 0;
+    this.pegZIndex = 2;
     this.clonedPegs = {};
     this.placedPegs = [];
     this.debug = false;
@@ -171,24 +172,30 @@ MastermindUI.prototype.initialize =function () {
   };
   this.clonedPegs = {};
   
-// This is not elegant. Where is malloc for JS? ->:
 
-  this.placedPegs = [
-              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
-              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
-              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
-              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
-              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
-              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
-              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
-              [{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()},{id:"empty", shape: pngFileMap.emptyPeg()}], 
-             ];
+  for (i = 0; i <= MastermindUI.PEGROWCOUNT; i++) {
+	  var a = [];
+	   for (var j = 0; j <= MastermindUI.PEGCOUNT; j++) {
+		   a[j] = {id:"empty", shape: pngFileMap.emptyPeg()};
+	   };
+	   this.placedPegs[i] = a;
+  };	   
+
   this.cloneCount=0;
+  this.pegZIndex = 2;
   this.canDrop=false;
  
 };
 
+// Debug helper
+MastermindUI.prototype.getZIndex= function(ev) {
 
+var style = this.getAttrFromEvent(ev,"style");
+var z = style.match(new RegExp("z-index: [0-9]*;"));
+var zz = z[0].match(new RegExp("[0-9]+"));
+
+return zz[0];
+};
 		
 
 MastermindUI.prototype.setUpDrag = function (mUI) {
@@ -197,7 +204,6 @@ MastermindUI.prototype.setUpDrag = function (mUI) {
 		  var id = mUI.getAttrFromEvent(ev,"id");
 	      var divEl = $('#'+id).parent();
 	      var element = $('#'+id).clone();
-	      var dateString = new Date();
 	      idString = id.toString() + mUI.cloneCount;
 	      mUI.cloneCount++;
 	      $(element).attr("id", idString);
@@ -208,12 +214,13 @@ MastermindUI.prototype.setUpDrag = function (mUI) {
 	    			  var domId = mUI.getAttrFromEvent(ev,"id");
 	    			  var style = mUI.getAttrFromEvent(ev,"style");
 					  var left = style.match(new RegExp("left: [0-9]*px"));
-				      var top = style.match(new RegExp("top: [0-9]*px"));
-	    		      if (mUI.debug) debug.println("START Event on "+domId); 
-	    		 	 		 
+				      var top = style.match(new RegExp("top: [0-9]*px"));		      
 				      var pegChoice = domId.match(new RegExp("green|red|blue|yellow|violet|cyan"));
 				      if (pegChoice == null)
 				    	  throw "Invalid Event Id:"+domId;
+				      if (mUI.debug) debug.println("START Event on "+domId);
+				     
+				      document.getElementById(domId).style.zIndex = mUI.pegZIndex++; //set zIndex to avoid greying errors 
 				      mUI.colorChoice = pegChoice[0]+"Peg";				      
 				      mUI.dragDestinationLeft = document.getElementById(pegChoice[0]+"ColorDraggable").style.left; 
 					  mUI.dragDestinationTop = document.getElementById(pegChoice[0]+"ColorDraggable").style.top;
@@ -230,6 +237,7 @@ MastermindUI.prototype.setUpDrag = function (mUI) {
 	      		 	  if (mUI.canDrop) {
 	      		 		  mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].id=domId;
 	      		 		  mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].shape=document.getElementById(domId).src;
+	      		 		  if (mUI.debug) debug.println("CAN drop, SRC:"+document.getElementById(domId).src); 
 	      		 	  };
 	      	  }
 	       });
@@ -257,6 +265,7 @@ MastermindUI.prototype.setUpDrop = function (mUI) {
 				  		domId =  mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].id;
 				  	 };
 				  	 document.getElementById(domId).src = pngFileMap.hiddenCodePeg();
+				  	 if (mUI.debug) debug.println("GREYED:"+ domId);
 				  	 mUI.canDrop = true;
 				  	 
 			  	  },
@@ -269,10 +278,12 @@ MastermindUI.prototype.setUpDrop = function (mUI) {
 					  	if(mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].id != "empty") { 
 					  		 // we retrieve the previously stored domId and color this back..
 					  		domId =  mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].id;
-					  		document.getElementById(domId).src = mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].shape;   
+					  		document.getElementById(domId).src = mUI.placedPegs[mUI.pegRowCursor][mUI.pegCursor].shape;  
+					  		if (mUI.debug) debug.println("RECOLORED:"+ domId);
 					  	 }
 					  	else {
-					  	 document.getElementById(domId).src = pngFileMap.emptyPeg();
+					  		document.getElementById(domId).src = pngFileMap.emptyPeg();
+					  		if (mUI.debug) debug.println("EMPTIED:"+ domId);
 					  	};
 					  	mUI.canDrop = false;
 				  },
@@ -286,7 +297,10 @@ MastermindUI.prototype.setUpDrop = function (mUI) {
 						mUI.pegs[mUI.pegRowCursor][mUI.pegCursor] = mUI.colorChoice;  
 						mUI.dragDestinationLeft = left[0].match(new RegExp("[0-9]*px")); 
 						mUI.dragDestinationTop = top[0].match(new RegExp("[0-9]*px"));
-						ui.draggable.draggable("disable", 1);
+						if (ui.draggable != null) {
+							if (mUI.debug) debug.println("DISABLING DRAGGABLE via DROP on "+domId); 
+		      		 	    ui.draggable.draggable("disable", 1);
+		      		 	  };
 			      }
 			  });
 		  }
@@ -295,7 +309,6 @@ MastermindUI.prototype.setUpDrop = function (mUI) {
 
 MastermindUI.prototype.playAgainHandler = function (event) {
 	  alert("Play again!");
-	  this.printPlacedPegs();
 	  this.initialize();
 	  this.UI.connectHTML(this);
 };
