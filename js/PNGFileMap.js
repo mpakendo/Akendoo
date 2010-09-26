@@ -20,14 +20,9 @@ function PNGFileMap() {
 		pegRow:			"shapeimage_89.png", /* 90-94, 173 */
 		emptyPeg:		"shapeimage_101.png", /* 102-128 */
 		emptyResultPeg: "shapeimage_129.png", /* 130-158 */
-		//colorDelimiter: "shapeimage_159.png", /* 160-163 */
-		colorDelimiter:	"shapeimageDelimiterOpaque.png",
 		hiddenCodePeg: 	"shapeimage_169.png", /* 170-172 */
 		pegChooserArrowLeft:	"shapeimage_174.png",
 		pegChooserArrowRight:	"shapeimage_175.png",
-		chosenPegDelimiter:	"shapeimage_176.png",
-		//pegDelimiter:		"shapeimage_177.png",
-		pegDelimiter: "shapeimageDelimiterOpaque.png",
 		buttonImage:	"buttonImage.png",
 		buttonOkIcon:	"buttonOkIcon.png"
 	};
@@ -50,25 +45,11 @@ PNGFileMap.prototype.pegDelimiter = function () {
 	return this.resourceFolderPath+this.map.pegDelimiter;
 };
 
-PNGFileMap.prototype.chosenPegDelimiter = function () {
-	return this.resourceFolderPath+this.map.chosenPegDelimiter;
-};
-
-PNGFileMap.prototype.pegChooserArrowRight = function () {
-	return this.resourceFolderPath+this.map.pegChooserArrowRight;
-};
-
-PNGFileMap.prototype.pegChooserArrowLeft = function () {
-	return this.resourceFolderPath+this.map.pegChooserArrowLeft;
-};
 
 PNGFileMap.prototype.hiddenCodePeg = function () {
 	return this.resourceFolderPath+this.map.hiddenCodePeg;
 };
 
-PNGFileMap.prototype.colorDelimiter = function () {
-	return this.resourceFolderPath+this.map.colorDelimiter;
-};
 
 PNGFileMap.prototype.emptyResultPeg = function () {
 	return this.resourceFolderPath+this.map.emptyResultPeg;
@@ -82,13 +63,6 @@ PNGFileMap.prototype.pegRow = function () {
 	return this.resourceFolderPath+this.map.pegRow;
 };
 
-PNGFileMap.prototype.colorChooserArrowDown = function () {
-	return this.resourceFolderPath+this.map.colorChooserArrowDown;
-};
-
-PNGFileMap.prototype.colorChooserArrowUp = function () {
-	return this.resourceFolderPath+this.map.colorChooserArrowUp;
-};
 
 PNGFileMap.prototype.greyResultPeg = function () {
 	return this.resourceFolderPath+this.map.greyResultPeg;
@@ -106,9 +80,11 @@ PNGFileMap.prototype.resultPegsDelimiter = function () {
 	return this.resourceFolderPath+this.map.resultPegsDelimiter;
 };
 
+
 PNGFileMap.prototype.pegRowHighlighted = function () {
 	return this.resourceFolderPath+this.map.pegRowHighlighted;
 };
+
 
 PNGFileMap.prototype.blackEmptyPegHole = function () {
 	return this.resourceFolderPath+this.map.blackEmptyPegHole;

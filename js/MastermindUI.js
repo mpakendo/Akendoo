@@ -191,7 +191,7 @@ MastermindUI.prototype.initialize =function () {
 MastermindUI.prototype.getZIndex= function(ev) {
 
 var style = this.getAttrFromEvent(ev,"style");
-var z = style.match(new RegExp("z-index: [0-9]*;"));
+var z = style.match(new RegExp("((z-index)|(Z-INDEX)): [0-9]*;"));
 var zz = z[0].match(new RegExp("[0-9]+"));
 
 return zz[0];
@@ -290,9 +290,9 @@ MastermindUI.prototype.setUpDrop = function (mUI) {
 				  drop: function(ev,ui) { 
 	    	            var domId = mUI.getAttrFromEvent(ev,"id");
 			            var style = mUI.getAttrFromEvent(ev,"style");
-						var left = style.match(new RegExp("left: [0-9]*px"));
-						var top = style.match(new RegExp("top: [0-9]*px"));
-				        if (mUI.debug) debug.println("DROP Event on "+domId);
+						var left = style.match(new RegExp("((left)|(LEFT)): [0-9]*px"));
+						var top = style.match(new RegExp("((top)|(TOP)): [0-9]*px"));
+				        if (mUI.debug) debug.println("DROP Event on "+domId+" style:"+style+" left:"+left[0]);
 					 
 						mUI.pegs[mUI.pegRowCursor][mUI.pegCursor] = mUI.colorChoice;  
 						mUI.dragDestinationLeft = left[0].match(new RegExp("[0-9]*px")); 
