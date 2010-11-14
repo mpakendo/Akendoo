@@ -98,9 +98,8 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
 		   $("#buttonOk").click(function(event){
 			   mastermindUI.buttonOKHandler(event);
 		   });
-
+	       pngFileMap.cacheImages(); 
 	   }
-
 	   this.firstRun = false;
     };
     

@@ -121,6 +121,15 @@ PNGFileMap.prototype.bluePeg = function () {
 };
 
 
+PNGFileMap.prototype.cacheImages = function () {
+	for (var property in this.map) {
+		var im = new Image();
+		im.src = this.url(property);
+	};
+	return;
+};
+
+
 
 
 
