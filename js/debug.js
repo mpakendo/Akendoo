@@ -26,7 +26,7 @@ Debug.prototype.printf = function (str) {
 Debug.prototype.println = function(str) {
  this.debugInfo += str;	
  this.debugInfo += "<BR>";
-}
+};
 
 Debug.prototype.clearDebugInfo = function () {
 	this.debugInfo = "DEBUG DATA:";
