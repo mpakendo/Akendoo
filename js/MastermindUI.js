@@ -198,7 +198,7 @@ return zz[0];
 };
 		
 
-MastermindUI.prototype.setUpDrag = function (mUI) {
+MastermindUI.prototype.setUpDrag = function (mUI) { //need parameter as 'this' is rebound in anonymous functions below
 	 var cloneBehaviour;
 	  cloneBehaviour = function(ev) {	 
 		  var id = mUI.getAttrFromEvent(ev,"id");
@@ -211,6 +211,7 @@ MastermindUI.prototype.setUpDrag = function (mUI) {
 	      mUI.clonedPegs[idString] = element; // hash: cloneId->element
 	      element.draggable({
 	    	  start: function(ev,ui) {
+	    	          debug.println("THIS in anonymous function:" + this);
 	    			  var domId = mUI.getAttrFromEvent(ev,"id");
 	    			  var style = mUI.getAttrFromEvent(ev,"style");
 					  var left = style.match(new RegExp("left: [0-9]*px"));
@@ -377,27 +378,27 @@ MastermindUI.prototype.chooseColorHandler = function (event) {
 	 var id = this.getAttrFromEvent(event,"id");
 
 	 switch (id) {
-	 case "colorDelimiter0":
+	 case "cyanColorDraggable": // colorDelimiter0
 		 this.colorChoice = "cyanPeg";
 		 this.colorCursor = 0;
 		 break;
-	 case "colorDelimiter1":
+	 case "violetColorDraggable": // colorDelimiter1
 		 this.colorChoice = "violetPeg";
 		 this.colorCursor = 1;
 		 break;
-	 case "colorDelimiter2":
+	 case "blueColorDraggable": // colorDelimiter2
 		 this.colorChoice = "bluePeg";
 		 this.colorCursor = 2;
 		 break;		 
-	 case "colorDelimiter3":
+	 case "yellowColorDraggable": // colorDelimiter3
 		 this.colorChoice = "yellowPeg";	 
 		 this.colorCursor = 3;
 		 break;		 
-	 case "colorDelimiter4":
+	 case "redColorDraggable": // colorDelimiter4
 		 this.colorChoice = "redPeg";
 		 this.colorCursor = 4;
 		 break;
-	 case "colorDelimiter5":
+	 case "greenColorDraggable": // colorDelimiter5
 		 this.colorChoice = "greenPeg";
 		 this.colorCursor = 5;
 		 break;

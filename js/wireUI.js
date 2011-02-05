@@ -2,6 +2,7 @@
 
 function WireUI() {
 	this.firstRun = true; //to avoid reconnecting event handlers
+	this.isTouchDevice = false;
 
 }
 
@@ -12,7 +13,15 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
        var id = function(str, i, j) {
     	   return "#"+str+i+"\\."+j;
        };
-  
+       
+       var checkForTouchDevice = function () {
+    	   var agent=navigator.userAgent.toLowerCase();
+    	   return ((agent.indexOf('iphone')!=-1) || (agent.indexOf('ipod')!=-1) || (agent.indexOf('ipad')!=-1));
+       };
+       
+       this.isTouchDevice = checkForTouchDevice();
+       debug.println("TOUCH DEVICE: " + this.isTouchDevice);
+       
 	   $("#redColorDraggable").attr("src", pngFileMap.redPeg());
 	   $("#greenColorDraggable").attr("src",pngFileMap.greenPeg());
 	   $("#yellowColorDraggable").attr("src", pngFileMap.yellowPeg());
@@ -20,7 +29,6 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
 	   $("#violetColorDraggable").attr("src", pngFileMap.violetPeg());
 	   $("#cyanColorDraggable").attr("src", pngFileMap.cyanPeg());
 	   
-
 	   //console.log($("img[@id^=pegRow]"));
 
 	   $("img[id*='pegHole']").each(function(i) {
@@ -38,31 +46,23 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
 	   for (var i = 0; i <= MastermindUI.PEGROWCOUNT; i++) {
 		   for (var j = 0; j <= MastermindUI.PEGCOUNT; j++) {
 			   $(id("peg",i,j)).attr("src", pngFileMap.emptyPeg());
-			   if (this.firstRun) {
+			   if (this.firstRun && this.isTouchDevice) {
 				   $(id("peg",i,j)).click(function(event) {
 					   mastermindUI.choosePegHandler(event);
 				   });
-			   }  
-		   }
-	   }  
+			   };  
+		   };
+	   };  
 
 	   $("img[id*='colorDelimiter']").each(function(i) {
 		   this.src= pngFileMap.colorDelimiter();
 	   });
-
-	   if (this.firstRun) {
-		   $("img[id*='colorDelimiter']").each(function(i) {
-			   this.onclick = function(event) {
-				   mastermindUI.chooseColorHandler(event);
-			   };
-		   });  
-	   }
-
+	   
 	   for (i = 0; i <= MastermindUI.PEGROWCOUNT; i++) {
 		   for (j = 0; j <= MastermindUI.PEGCOUNT; j++) {
 			   $(id("resultPeg",i,j)).attr("src", pngFileMap.emptyResultPeg());
-		   }
-	   }  
+		   };
+	   };  
  
 	   $("img[id*='pegDelimiter']").each(function(i) {
 		   this.src= pngFileMap.pegDelimiter();	  
@@ -76,31 +76,51 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
 		   this.src= pngFileMap.hiddenCodePeg();	  
 	   });    
 
-	   $("#hiddenCodeRow").attr("src", pngFileMap.pegRowHighlighted());
-	   $("#buttonOk").attr("src",pngFileMap.buttonImage());
-	   $("#buttonOkIcon").attr("src",pngFileMap.buttonOkIcon());
-	   $("#buttonPlayAgain").attr("src",pngFileMap.buttonImage());  
 
 	   if (this.firstRun) {
-
-		   $("#buttonPlayAgain").click(function(event){
-			   mastermindUI.playAgainHandler(event);
-		   });  
-
-		   $("#buttonPlayAgainIcon").click(function(event){
-			   mastermindUI.playAgainHandler(event);
-		   });  
-
-		   $("#buttonOkIcon").click(function(event){
-			   mastermindUI.buttonOKHandler(event);
-		   });
-
-		   $("#buttonOk").click(function(event){
-			   mastermindUI.buttonOKHandler(event);
-		   });
+		   $("#hiddenCodeRow").attr("src", pngFileMap.pegRowHighlighted());
+		   $("#buttonOk").attr("src",pngFileMap.buttonImage());
+		   $("#buttonOkIcon").attr("src",pngFileMap.buttonOkIcon());
+		   $("#buttonPlayAgain").attr("src",pngFileMap.buttonImage());  
+		    		    
+		   $("#buttonPlayAgain").click(function(event){mastermindUI.playAgainHandler(event);});     
+		   $("#buttonPlayAgainIcon").click(function(event){mastermindUI.playAgainHandler(event);});  
+		   $("#buttonOkIcon").click(function(event){mastermindUI.buttonOKHandler(event);});
+		   $("#buttonOk").click(function(event){mastermindUI.buttonOKHandler(event);});
+		   
+		   if (this.isTouchDevice) { 
+			   $("#pegChooserArrowLeft").attr("src", pngFileMap.pegChooserArrowLeft());
+			   $("#pegChooserArrowLeft").click(function(event){
+				   mastermindUI.setColorHandler(event);
+			   });
+			   $("#buttonPlayAgain").css({left:"600px"});
+			   $("#buttonPlayAgainIcon").css({left:"608px"});
+			   $("#buttonOkIcon").css({left:"528px"});
+			   $("#buttonOk").css({left:"510px"});
+			   $("#socialMediaLinks").css({left: "650px"}); // to be continued
+			   $("img[id$='ColorDraggable']").each(function(i) {
+				   this.onclick = function(event) {
+					   mastermindUI.chooseColorHandler(event);
+				   };
+			   });
+		   } 
+		   else {
+			   $("#pegChooserArrowLeft").remove();
+		   };	 
 	       pngFileMap.cacheImages(); 
-	   }
+	   };
+	   
+	   if (this.isTouchDevice) { // needs to run for every new UI wiring to reset cursors
+		   // Not sure which DOM access and setter is better. Old school vs. Jquery:
+		   $(mastermindUI.mkId("pegDelimiter",mastermindUI.pegRowCursor,mastermindUI.pegCursor)).attr("src",pngFileMap.chosenPegDelimiter());
+		   document.getElementById("colorDelimiter"+mastermindUI.colorCursor).src = pngFileMap.chosenPegDelimiter();   
+	   };
+	   
 	   this.firstRun = false;
+	   if (!this.isTouchDevice) {
+		  mastermindUI.setUpDrag(mastermindUI); // need the parameter due to 'this' rebinding in setUpDrag
+		  mastermindUI.setUpDrop(mastermindUI);
+	   };
     };
     
     return connectHTMLFunction;
