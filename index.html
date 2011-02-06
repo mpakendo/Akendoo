@@ -31,9 +31,7 @@
     	 debug.UI = mastermindUI; 
     	 mastermindUI.initialize();   
          wireUI.connectHTML(mastermindUI);
-         
-         //mastermindUI.setUpDrag(mastermindUI);
-         //mastermindUI.setUpDrop(mastermindUI);
+
 /*
          $(window).keydown(function(event) {
              if (mastermindUI.debug)
@@ -42,17 +40,12 @@
             	 mastermindUI.debug = true;
          });
 */         
-mastermindUI.debug = true;
-         debug.println("Browser: " + navigator.appName);
-         debug.println("Version: " + navigator.appVersion);
-         debug.println("Platform:" + navigator.platform);
-         debug.println("User Agent:" + navigator.userAgent);
-      
+         mastermindUI.debug = false;       
     });
     </script> 
   </head>
   <body style="background: #000000; margin: 0pt; " onload="onPageLoad();">
-<!--  debug controls -->
+<!--  debug controls 
 <table> 
 	<tr>
 		<td><a href="#" onclick="{return debug.displayDebugInfo();}">Debug Information</a></td>
@@ -62,7 +55,7 @@ mastermindUI.debug = true;
 	</tr>	
 </table>
 <div style="background:green" id="Mastermind.html:displayDebugInfo"></div>
-<!-- end debug here -->
+end debug here -->
     <div style="text-align: center; ">
       <div style="margin-bottom: 0px; margin-left: auto; margin-right: auto; margin-top: 0px; overflow: hidden; position: relative;  background: #000000; text-align: left; width: 700px; " id="body_content">
         <div style="float: left; height: 0px; line-height: 0px; margin-left: 0px; position: relative; width: 700px; z-index: 10; " id="header_layer">
@@ -477,7 +470,7 @@ mastermindUI.debug = true;
 <!--    
    <div id= "socialMediaLinks" style="margin-top: 450px; margin-left: 600px; position: relative; width: 700px; " > 
 --> 
-  <div id= "socialMediaLinks" style="height: 50px; left: 600px; position: absolute; top: 450px; width: 75px; z-index: 1; " > 
+  <div id= "socialMediaLinks" style="height: 50px; left: 600px; position: absolute; top: 430px; width: 75px; z-index: 1;" > 
   <iframe src="http://www.facebook.com/plugins/like.php?href=www.akendoo.com&amp;layout=button_count&amp;show_faces=false&amp;width=450&amp;action=like&amp;colorscheme=dark&amp;height=21" scrolling="no" frameborder="0" style="border:none; overflow:hidden; width:450px; height:21px;" allowTransparency="true"></iframe>
   </div> 
          <div style="height: 480px; line-height: 480px; " class="tinyText"> </div> 

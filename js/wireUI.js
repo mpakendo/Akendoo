@@ -4,8 +4,7 @@ function WireUI() {
 	this.firstRun = true; //to avoid reconnecting event handlers
 	this.isTouchDevice = false;
 
-}
-
+};
 
 WireUI.prototype.connectHTML = (function() { // function called immediately purely to create a lexical block for "pngFileMap"
 	var pngFileMap = new PNGFileMap();
@@ -20,7 +19,6 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
        };
        
        this.isTouchDevice = checkForTouchDevice();
-       debug.println("TOUCH DEVICE: " + this.isTouchDevice);
        
 	   $("#redColorDraggable").attr("src", pngFileMap.redPeg());
 	   $("#greenColorDraggable").attr("src",pngFileMap.greenPeg());
@@ -97,7 +95,7 @@ WireUI.prototype.connectHTML = (function() { // function called immediately pure
 			   $("#buttonPlayAgainIcon").css({left:"608px"});
 			   $("#buttonOkIcon").css({left:"528px"});
 			   $("#buttonOk").css({left:"510px"});
-			   $("#socialMediaLinks").css({left: "650px"}); // to be continued
+			   $("#socialMediaLinks").css({left: "605px", top: "460px"}); // to be continued
 			   $("img[id$='ColorDraggable']").each(function(i) {
 				   this.onclick = function(event) {
 					   mastermindUI.chooseColorHandler(event);

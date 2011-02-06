@@ -25,12 +25,9 @@ function MastermindUI() {
     	
 };
 
-
-
 MastermindUI.PEGROWCOUNT = 7; // 0-7
 MastermindUI.PEGCOUNT = 3; // 0-3
 MastermindUI.COLORCOUNT = 5; // 0-6
-
 
 MastermindUI.prototype.printPlacedPegs = function () {
 	debug.println("");
@@ -66,8 +63,7 @@ MastermindUI.prototype.printPlacedPegs = function () {
 				shapeTxt = "null";
 				break;
 			
-			}; 
-			
+			}; 			
 			debug.printf("["+this.placedPegs[i][j].id+":"+shapeTxt+"]");
 		};
 		debug.println("");
@@ -92,8 +88,8 @@ MastermindUI.prototype.codeIndexOf = function(str) {
 		if (this.colorCode[i]==str) {
 			locations[k]=i;
 			k = k + 1;
-		}
-	 }
+		};
+	 };
 	return locations;
 };
 
@@ -106,8 +102,6 @@ MastermindUI.prototype.revealCode = function() {
 	  });
 };
 
-
-
 MastermindUI.prototype.getAttrFromEvent = function (event,attr) {
 	 var id;
 	 if (!event) event = window.event;
@@ -119,7 +113,6 @@ MastermindUI.prototype.getAttrFromEvent = function (event,attr) {
 	 }
 	 return id;
 };
-
 
 
 MastermindUI.prototype.getCoordinatesFromEvent = function (event) {
@@ -172,7 +165,6 @@ MastermindUI.prototype.initialize =function () {
   };
   this.clonedPegs = {};
   
-
   for (i = 0; i <= MastermindUI.PEGROWCOUNT; i++) {
 	  var a = [];
 	   for (var j = 0; j <= MastermindUI.PEGCOUNT; j++) {
@@ -211,7 +203,6 @@ MastermindUI.prototype.setUpDrag = function (mUI) { //need parameter as 'this' i
 	      mUI.clonedPegs[idString] = element; // hash: cloneId->element
 	      element.draggable({
 	    	  start: function(ev,ui) {
-	    	          debug.println("THIS in anonymous function:" + this);
 	    			  var domId = mUI.getAttrFromEvent(ev,"id");
 	    			  var style = mUI.getAttrFromEvent(ev,"style");
 					  var left = style.match(new RegExp("left: [0-9]*px"));
